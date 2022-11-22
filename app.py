@@ -43,7 +43,7 @@ def index():
 def index1(): 
     team = database.source("all_team.sql")
     print(team)
-    return render_template('index.html')
+    return render_template('teams_test.html')
 
 if __name__ == '__main__':
     app.run()

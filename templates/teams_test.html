@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>{% block title %}
+        {% endblock title %}</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    {% block style %}
+    {% endblock style %}
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- Vendor CSS Files -->
+    <link href="static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="static/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="static/assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="static/assets/vendor/aos/aos.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="static/assets/css/style.css" rel="stylesheet">
+    <link href="static/assets/css/mystyle.css" rel="stylesheet">
+
+
+</head>
+
+
+<body>
+    {% include 'header.html' %}
+    <!-- ======= Header ======= -->
+    <!-- <div class="container">
+        <div class="row">
+            <label>Buscar:</label><input type="text" onkeyup="filter(event)">
+            <table id="easy-table" class="table table is-striped is-bordered ">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Last name</th>
+                        <th>Email</th>
+                        <th>Gere</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+            <div id="paginator"></div>
+        </div>
+
+    </div> -->
+    <div class="container table-top">
+        <div class="card shadow my-5">
+            <h4 class="card-header">Teams</h4>
+            <div class="card-body">
+                <form class="mb-3">
+                    <label for="searchBox">Search table</label>
+                    <input type="text" onkeyup="filter(event)" id="searchBox" name="searchBox" class="form-control">
+                    <small class="form-text feedback"></small>
+                </form>
+                <table id="easy-table"
+                    class="table table-searchable table-striped table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Gere</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div id="paginator"></div>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+
+    </div>
+
+    <script src="static/assets/js/script.js"></script>
+
+    <script src="static/assets/js/main.js"></script>
+    <script>
+        // dummy data
+        const NAMES = ['Paul', 'Anne', 'Benji', 'Carl', 'Sarah', 'Julie', 'Ryan', 'Steve', 'Peter', 'Samantha'];
+        const LAST_NAMES = ['Smith', 'Anderson', 'Morrison', 'Kane', 'Ferguson', 'Warner', 'Hammer', 'Phillips', 'Thompson', 'Chang'];
+        const COUNTRIES = ['South Africa', 'England', 'Australia', 'Mexico', 'China', 'Japan', 'Honduras', 'Canada', 'France', 'Spain']
+
+        let data = [];
+        for (let i = 0; i < 100; i++) {
+            let row = {
+                id: i,
+                name: NAMES[Math.floor(Math.random() * 10)],
+                last_name: LAST_NAMES[Math.floor(Math.random() * 10)],
+                country: COUNTRIES[Math.floor(Math.random() * 10)],
+                age: Math.floor(Math.random() * 99)
+            }
+            data.push(row);
+        }
+        console.log(data)
+
+        // required options
+        const options = {
+            tableId: 'easy-table',
+            currentPage: 1,
+            perPage: 10,
+            autoHeaders: true,
+            arrowUp: '⇑',
+            arrowDown: '⇓',
+            previousText: '&#10094',
+            nextText: '&#10095',
+        }
+
+        setTable(data, options);
+
+    </script>
+
+</body>
+
+</html>

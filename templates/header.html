@@ -1,0 +1,32 @@
+<!-- ======= Header ======= -->
+<header id="header">
+    <div class="container">
+
+        <div id="logo" class="pull-left">
+
+            <a href="/" class="scrollto">T.M.S</a>
+        </div>
+
+        <nav id="nav-menu-container">
+            <ul class="nav-menu">
+                <li class="{% block home %}
+          {% endblock home %}"><a href="/">Home</a></li>
+
+                <li><a href="/alltickets">Tickets</a></li>
+                <li><a href="/allteams">Teams</a></li>
+                <li><a href="/allmanagers">Managers</a></li>
+                <li><a href="/allsprints">Sprints</a></li>
+
+
+
+                <!-- {% if current_user.is_authenticated  %}
+          <li class="buy-tickets"><a href="">Welcome {{current_user.username}}</a></li>
+            <li class="buy-tickets"><a href="/logout">Logout</a></li>
+          {% else %}
+          <li class="buy-tickets"><a href="/signup">Signin</a></li>
+        
+          {% endif %} -->
+            </ul>
+        </nav><!-- #nav-menu-container -->
+    </div>
+</header><!-- End Header -->

@@ -41,7 +41,7 @@ h6 {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-     :root {
+    :root {
         scroll-behavior: auto;
     }
 }
@@ -157,7 +157,7 @@ h6 {
     z-index: 997;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 10000px) {
     #header {
         background: rgba(6, 12, 34, 0.98);
         height: 70px;
@@ -684,6 +684,7 @@ body.mobile-nav-active #mobile-nav-toggle {
         transform: scale(0.6, 0.6);
         opacity: 1;
     }
+
     100% {
         transform: scale(1, 1);
         opacity: 0;
@@ -695,6 +696,7 @@ body.mobile-nav-active #mobile-nav-toggle {
         transform: scale(0.6, 0.6);
         opacity: 1;
     }
+
     100% {
         transform: scale(1, 1);
         opacity: 0;
@@ -1231,6 +1233,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     #faq #faq-list a {
         font-size: 18px;
     }
+
     #faq #faq-list i {
         top: 13px;
     }
@@ -1448,6 +1451,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 @media (min-width: 768px) {
+
     #contact .contact-address,
     #contact .contact-phone,
     #contact .contact-email {
@@ -1550,6 +1554,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -1559,6 +1564,7 @@ body.mobile-nav-active #mobile-nav-toggle {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }

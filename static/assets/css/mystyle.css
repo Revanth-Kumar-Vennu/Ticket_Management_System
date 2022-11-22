@@ -1,0 +1,30 @@
+@import 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css';
+
+table {
+    table-layout: auto;
+    border-spacing: 0;
+    border-collapse: collapse;
+    width: 80% !important;
+    margin: 40px auto;
+}
+
+.table-top {
+    margin-top: 8%;
+}
+
+form label {
+    cursor: pointer;
+}
+
+.table-searchable .is-hidden {
+    display: none;
+}
+
+.table-searchable .is-match {
+    background-color: lawngreen;
+    transition: background-color .5s ease-in;
+}
+
+.table-searchable td[data-searchable="false"] {
+    background-color: lightcoral;
+}
