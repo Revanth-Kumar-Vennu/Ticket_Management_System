@@ -37,6 +37,10 @@ def load_user(user_id):
 
 @app.route('/')
 def index(): 
+    return render_template('index.html')
+
+@app.route('/allteams')
+def index1(): 
     team = database.source("all_team.sql")
     print(team)
     return render_template('index.html')

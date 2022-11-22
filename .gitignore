@@ -4,3 +4,4 @@ static/uploads/*
 static/exports/*
 env
 .DS_Store
+.vscode
