@@ -1,0 +1,6 @@
+__pycache__
+mysql.cfg
+static/uploads/*
+static/exports/*
+env
+.DS_Store
