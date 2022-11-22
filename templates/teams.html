@@ -34,7 +34,7 @@
 <body>
     {% include 'header.html' %}
     <!-- ======= Header ======= -->
-    <div class="container">
+    <!-- <div class="container">
         <div class="row">
             <label>Buscar:</label><input type="text" onkeyup="filter(event)">
             <table id="easy-table" class="table table is-striped is-bordered ">
@@ -52,6 +52,36 @@
                 </tbody>
             </table>
             <div id="paginator"></div>
+        </div>
+
+    </div> -->
+    <div class="container table-top">
+        <div class="card shadow my-5">
+            <h4 class="card-header">Teams</h4>
+            <div class="card-body">
+                <form class="mb-3">
+                    <label for="searchBox">Search table</label>
+                    <input type="text" onkeyup="filter(event)" id="searchBox" name="searchBox" class="form-control">
+                    <small class="form-text feedback"></small>
+                </form>
+                <table id="easy-table"
+                    class="table table-searchable table-striped table-bordered table-hover table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Last name</th>
+                            <th>Email</th>
+                            <th>Gere</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div id="paginator"></div>
+            </div>
+            <div class="card-footer"></div>
         </div>
 
     </div>
