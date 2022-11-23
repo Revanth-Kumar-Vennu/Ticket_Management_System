@@ -280,5 +280,36 @@ def createRequest():
 
     return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+@app.route('/createChange',methods=['GET', 'POST'])
+def createChange(): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        chg_id = request.form['chg_id']
+        chg_description = request.form['chg_description']
+        chg_start = request.form['chg_start']
+        chg_status = request.form['chg_status']
+        chg_priority = request.form['chg_priority']
+        chg_sprint = request.form['chg_sprint']
+        chg_created = request.form['chg_created']
+        chg_acceptor = request.form['chg_acceptor']
+        chg_implementor = request.form['chg_implementor']
+        try:
+            database.source("create_change_ticket.sql", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_change.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
