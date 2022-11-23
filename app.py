@@ -635,5 +635,25 @@ def editChange(id):
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+
+@app.route('/getChart',methods=['GET', 'POST'])
+def renderChart():
+    data = []
+    if request.method == 'POST':
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        print(start_date,end_date)
+        tickets = database.source("get_tickets_between_dates.sql",start_date,end_date,start_date,end_date,start_date,end_date)
+        for val in tickets:
+            row = [
+                str(val[0]),
+                val[1],
+            ]
+            data.append(row)
+        print(data)
+    return render_template('render_chart.html',data=data)
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
