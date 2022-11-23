@@ -83,15 +83,15 @@ def employees():
     for val in team:
         row = [
             val[0],
-            val[1],
+            val[12],
             val[2],
             val[3],
             val[4],
             val[6] +" "+ 
             val[5] +", "+ 
-            val[7] +", "+ 
+            val[9] +", "+ 
             val[8] +", "+ 
-            val[9],
+            val[7],
             val[10],
             val[11]
         ]
@@ -100,6 +100,22 @@ def employees():
     headings = ["ID", "Team ID", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
 
     return render_template('teams.html', data=data, type="sprint", headings=headings)
+
+
+@app.route('/allmanagers')
+def managers():
+    team = database.source("all_managers.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1],
+            val[2]
+        ]
+        data.append(row)
+    headings = ["ID","Manager Name", "Team Name"]
+
+    return render_template('teams.html', data=data, type="manager", headings=headings)
 
 
 if __name__ == '__main__':
