@@ -310,6 +310,33 @@ def createChange():
 
     return render_template("create_change.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+@app.route('/createSprint',methods=['GET', 'POST'])
+def createSprint(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        sprint_id = request.form['sprint_id']
+        sprint_name = request.form['sprint_name']
+        sprint_start = request.form['sprint_start']
+        sprint_end = request.form['sprint_end']
+        sprint_team = request.form['sprint_team']
+        try:
+            database.source("create_sprint.sql", sprint_id, sprint_name, sprint_start, sprint_end,output=False)
+            database.source("create_sprint_team.sql", sprint_id, sprint_team,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_sprint.html", data=data, len_team=len(data))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
