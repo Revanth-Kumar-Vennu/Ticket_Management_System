@@ -1,0 +1,57 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Manager</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="static/assets/css/create.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+
+<body>
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/createManager" method="post">
+                <h1> Create a Manager </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="emp_id">Manager Name:</label>
+                    <select id="emp_id" name="emp_id">
+                        <optgroup label="Team">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="team_id">Manager Team:</label>
+                    <select id="team_id" name="team_id">
+                        <optgroup label="Team">
+                            {% for i in range(len_team) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                </fieldset>
+
+
+                <button type="submit">Create</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

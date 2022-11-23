@@ -368,6 +368,29 @@ def createEmployee():
 
     return render_template("create_employee.html", data=data, len_team=len(data))
 
+@app.route('/createManager',methods=['GET', 'POST'])
+def createManager(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        team_id = request.form['team_id']
+        try:
+            database.source("create_manager.sql", emp_id,team_id,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_manager.html", data=data, len_team=len(data),employees=employees,len_employee=len(employees))
+
 
 
 if __name__ == '__main__':
