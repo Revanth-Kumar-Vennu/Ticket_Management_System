@@ -50,7 +50,7 @@ def index():
 
 
 @app.route('/allTeams')
-def index1():
+def allTeams():
     team = database.source("all_team.sql")
     data = []
     for val in team:
@@ -280,19 +280,7 @@ def createRequest():
 
     return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
-<<<<<<< HEAD
 
-
-@app.route('/edit/Teams/<id>',methods=['GET', 'POST'])
-def editTeam(id): 
-    if request.method == 'POST':
-        team_id = request.form['team_id']
-        team_name = request.form['team_name']
-        team_description = request.form['team_description']
-        team_location = request.form['team_location']
-        try:
-            database.source("update_team.sql", team_name, team_description, team_location,team_id,output=False)
-=======
 @app.route('/createChange',methods=['GET', 'POST'])
 def createChange(): 
     sprints = database.source("all_sprints.sql")
@@ -397,23 +385,33 @@ def createManager():
         team_id = request.form['team_id']
         try:
             database.source("create_manager.sql", emp_id,team_id,output=False)
->>>>>>> f1186778cdc1e24085116c271b337511743969bb
+
             return redirect(url_for('index'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-<<<<<<< HEAD
+
+    return render_template("create_manager.html", data=data, len_team=len(data),employees=employees,len_employee=len(employees))
+
+
+@app.route('/edit/Teams/<id>',methods=['GET', 'POST'])
+def editTeam(id): 
+    if request.method == 'POST':
+        team_id = request.form['team_id']
+        team_name = request.form['team_name']
+        team_description = request.form['team_description']
+        team_location = request.form['team_location']
+        try:
+            database.source("update_team.sql", team_name, team_description, team_location,team_id,output=False)
+            return redirect(url_for('allTeams'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
     
     values=database.source("getTeam.sql",id)
 
     print(values)
     return render_template("edit_team.html",values=values,id=id)
-=======
-
-    return render_template("create_manager.html", data=data, len_team=len(data),employees=employees,len_employee=len(employees))
-
-
->>>>>>> f1186778cdc1e24085116c271b337511743969bb
 
 if __name__ == '__main__':
     app.run(debug=True)
