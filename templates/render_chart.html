@@ -46,20 +46,20 @@
         <div class="card shadow my-5">
             <h4 class="card-header">Tickets Over a Period of Time</h4>
             <div class="card-body">
-                <form class="mb-3" style="width: 100%;">
+                <form class="mb-3" style="width: 100%;" action="/getChart" method="post">
                     <div class="flex-parent-element">
                         <div class="flex-child-element">
                             <label for="start_date">Start Date:</label>
                             <input type="date" id="start_date" name="start_date">
                         </div>
                         <div class="flex-child-element">
-                            <label for="end_date">Start Date:</label>
+                            <label for="end_date">End Date:</label>
                             <input type="date" id="end_date" name="end_date">
                         </div>
 
                     </div>
                     <small class="form-text feedback"></small>
-
+                    <button type="submit">Create</button>
                 </form>
                 <canvas id="line-chart" width="800" height="450"></canvas>
 
@@ -77,36 +77,66 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script type="text/javascript">
-        var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-        var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+        var old_data = '{{data|tojson|safe}}'
+        old_data = JSON.parse(old_data)
+        console.log(old_data)
+        var all_data = []
+        var dates = []
+        for (let item of old_data) {
+            var new_json = {
+                x: item[0],
+                y: item[1]
+            }
+            dates.push(item[0])
+            all_data.push(new_json)
+        }
+        console.log(all_data)
 
         new Chart("line-chart", {
             type: 'line',
             data: {
-                labels: [1500, 1600, 1700, 1750, 1800, 1850, 1900, 1950, 1999, 2050],
+                labels: dates,
                 datasets: [{
-                    data: [{ x: 1500, y: 8000 }, 114, 106, 106, 107, 111, 133, 221, 783, 2478],
-                    label: "Africa",
+                    data: all_data,
+                    label: "All Tickets",
                     borderColor: "#3e95cd",
                     fill: false
-                }, {
-                    data: [282, 350, 411, 502, 635, 809, 947, 1402, 3700, 5267],
-                    label: "Asia",
-                    borderColor: "#8e5ea2",
-                    fill: false
-                }, {
-                    data: [168, 170, 178, 190, 203, 276, 408, 547, 675, 734],
-                    label: "Europe",
-                    borderColor: "#3cba9f",
-                    fill: false
+                    // }, {
+                    //     data: [{
+                    //         x: '2021-11-06 23:39:30',
+                    //         y: 150
+                    //     }, {
+                    //         x: '2021-11-07 01:00:28',
+                    //         y: 160
+                    //     }, {
+                    //         x: '2021-11-07 09:00:28',
+                    //         y: 120
+                    //     }],
+                    //     label: "Asia",
+                    //     borderColor: "#8e5ea2",
+                    //     fill: false
+                    // }, {
+                    //     data: [{
+                    //         x: '2021-11-06 23:39:30',
+                    //         y: 250
+                    //     }, {
+                    //         x: '2021-11-07 01:00:28',
+                    //         y: 260
+                    //     }, {
+                    //         x: '2021-11-07 09:00:28',
+                    //         y: 220
+                    //     }],
+                    //     label: "Europe",
+                    //     borderColor: "#3cba9f",
+                    //     fill: false
                 }
                 ]
             },
             options: {
                 title: {
                     display: true,
-                    text: 'World population per region (in millions)'
-                }
+                    text: 'All tickets over a period of time.'
+                },
             }
         });
 
