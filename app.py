@@ -280,6 +280,7 @@ def createRequest():
 
     return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+<<<<<<< HEAD
 
 
 @app.route('/edit/Teams/<id>',methods=['GET', 'POST'])
@@ -291,15 +292,128 @@ def editTeam(id):
         team_location = request.form['team_location']
         try:
             database.source("update_team.sql", team_name, team_description, team_location,team_id,output=False)
+=======
+@app.route('/createChange',methods=['GET', 'POST'])
+def createChange(): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        chg_id = request.form['chg_id']
+        chg_description = request.form['chg_description']
+        chg_start = request.form['chg_start']
+        chg_status = request.form['chg_status']
+        chg_priority = request.form['chg_priority']
+        chg_sprint = request.form['chg_sprint']
+        chg_created = request.form['chg_created']
+        chg_acceptor = request.form['chg_acceptor']
+        chg_implementor = request.form['chg_implementor']
+        try:
+            database.source("create_change_ticket.sql", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
             return redirect(url_for('index'))
         except Exception as err:
             print(err)
             flash(err, 'error')
+
+    return render_template("create_change.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
+@app.route('/createSprint',methods=['GET', 'POST'])
+def createSprint(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        sprint_id = request.form['sprint_id']
+        sprint_name = request.form['sprint_name']
+        sprint_start = request.form['sprint_start']
+        sprint_end = request.form['sprint_end']
+        sprint_team = request.form['sprint_team']
+        try:
+            database.source("create_sprint.sql", sprint_id, sprint_name, sprint_start, sprint_end,output=False)
+            database.source("create_sprint_team.sql", sprint_id, sprint_team,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_sprint.html", data=data, len_team=len(data))
+
+@app.route('/createEmployee',methods=['GET', 'POST'])
+def createEmployee(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        team_id = request.form['team_id']
+        emp_name = request.form['emp_name']
+        date_of_birth = request.form['date_of_birth']
+        sex = request.form['sex']
+        address_street_name = request.form['address_street_name']
+        address_street_number = request.form['address_street_number']
+        address_zipcode = request.form['address_zipcode']
+        address_city = request.form['address_city']
+        address_state = request.form['address_state']
+        phone_number = request.form['phone_number']
+        joining_date = request.form['joining_date']
+        try:
+            database.source("create_employee.sql", emp_id,team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_employee.html", data=data, len_team=len(data))
+
+@app.route('/createManager',methods=['GET', 'POST'])
+def createManager(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        team_id = request.form['team_id']
+        try:
+            database.source("create_manager.sql", emp_id,team_id,output=False)
+>>>>>>> f1186778cdc1e24085116c271b337511743969bb
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+<<<<<<< HEAD
     
     values=database.source("getTeam.sql",id)
 
     print(values)
     return render_template("edit_team.html",values=values,id=id)
+=======
+
+    return render_template("create_manager.html", data=data, len_team=len(data),employees=employees,len_employee=len(employees))
+
+
+>>>>>>> f1186778cdc1e24085116c271b337511743969bb
 
 if __name__ == '__main__':
     app.run(debug=True)

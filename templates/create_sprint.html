@@ -1,0 +1,65 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Sprint</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="static/assets/css/create.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+
+<body>
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/createSprint" method="post">
+                <h1> Create a Sprint </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="sprint_id">Sprint ID:</label>
+                    <input type="text" id="sprint_id" name="sprint_id">
+
+                    <label for="sprint_name">Sprint Name:</label>
+                    <input type="text" id="sprint_name" name="sprint_name">
+
+                    <label for="sprint_start">Start Date:</label>
+                    <input type="date" id="sprint_start" name="sprint_start">
+                    <label for="sprint_end">End Date:</label>
+                    <input type="date" id="sprint_end" name="sprint_end">
+
+                    <label for="sprint_team">Team:</label>
+                    <select id="sprint_team" name="sprint_team">
+                        <optgroup label="Team">
+                            {% for i in range(len_team) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                </fieldset>
+
+
+                <button type="submit">Create</button>
+
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#sprint_start").change(function () {
+            $("#sprint_end").prop("min", $(this).val());
+            $("#sprint_end").val(""); //clear end date input when start date changes
+        });
+    </script>
+</body>
+
+</html>

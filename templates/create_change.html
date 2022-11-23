@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create a Change</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="static/assets/css/create.css" rel="stylesheet">
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+
+<body>
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/createChange" method="post">
+                <h1> Create a Change </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="chg_id">Change ID:</label>
+                    <input type="text" id="chg_id" name="chg_id" pattern="^CHG[0-9]+$">
+
+                    <label for="chg_description">Change Description:</label>
+                    <input type="text" id="chg_description" name="chg_description">
+
+                    <label for="chg_start">Start Date:</label>
+                    <input type="date" id="chg_start" name="chg_start">
+
+                    <label for="chg_status">Status:</label>
+                    <select id="chg_status" name="chg_status">
+                        <optgroup label="Change Type">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Closed">Closed</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="chg_priority">Priority:</label>
+                    <select id="chg_priority" name="chg_priority">
+                        <optgroup label="Change Priority">
+                            <option value="P1">P1</option>
+                            <option value="P2">P2</option>
+                            <option value="P3">P3</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="chg_sprint">Sprint:</label>
+                    <select id="chg_sprint" name="chg_sprint">
+                        <optgroup label="Sprint Name">
+                            {% for i in range(len_sprint) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="chg_created">Created By:</label>
+                    <select id="chg_created" name="chg_created">
+                        <optgroup label="Created By">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="chg_acceptor">Acceptor:</label>
+                    <select id="chg_acceptor" name="chg_acceptor">
+                        <optgroup label="Acceptor">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="chg_implementor">Implementor By:</label>
+                    <select id="chg_implementor" name="chg_implementor">
+                        <optgroup label="Implementor">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                </fieldset>
+
+
+                <button type="submit">Create</button>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
