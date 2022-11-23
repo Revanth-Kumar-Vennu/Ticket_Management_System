@@ -151,9 +151,10 @@ const showPage = (page) => {
         let icon_html = `<td data-searchable="false">
               <div class="btn-group btn-group-sm" role="group">
               <a href="/edit/${type}/${id}"><button type="button" class="btn btn-outline-dark"><i class="fas fa-pen"></i></button></a>
-              <a href="/delete/${type}/${id}"><button type="button" class="btn btn-outline-dark"><i class="fas fa-trash"></i></button></a>
+              <a href="#myModal" class="trigger-btn" data-toggle="modal" data-url="/delete/${type}/${id}"><button  type="button" class="btn btn-outline-dark"><i class="fas fa-trash"></i></button></a>
               </div>
             </td>`
+        // /delete/${type}/${id}
         td_icons.innerHTML = icon_html;
         tr.appendChild(td_icons);
         tableBody.appendChild(tr);

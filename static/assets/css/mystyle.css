@@ -6,6 +6,12 @@ table {
     border-collapse: collapse;
     width: 96% !important;
     margin: 40px auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.table-responsive {
+    display: inline-table;
 }
 
 .table-top {
@@ -33,17 +39,18 @@ td {
     text-align: center !important;
     vertical-align: middle !important;
 }
+
 .flex-parent-element {
     display: flex;
     width: 100%;
-  }
-  
-  .flex-child-element {
+}
+
+.flex-child-element {
     flex: 1;
     margin: 10px;
-  }
-  
-  .flex-child-element:first-child {
+}
+
+.flex-child-element:first-child {
     margin-right: 10px;
     width: 100%;
-  }
+}
