@@ -413,5 +413,187 @@ def editTeam(id):
     print(values)
     return render_template("edit_team.html",values=values,id=id)
 
+@app.route('/edit/Employees/<id>',methods=['GET', 'POST'])
+def editEmployee(id): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        team_id = request.form['team_id']
+        emp_name = request.form['emp_name']
+        date_of_birth = request.form['date_of_birth']
+        sex = request.form['sex']
+        address_street_name = request.form['address_street_name']
+        address_street_number = request.form['address_street_number']
+        address_zipcode = request.form['address_zipcode']
+        address_city = request.form['address_city']
+        address_state = request.form['address_state']
+        phone_number = request.form['phone_number']
+        joining_date = request.form['joining_date']
+        try:
+            database.source("update_employee.sql",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,emp_id,output=False)
+            return redirect(url_for('employees'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    
+    values=database.source("get_Employee.sql",id)
+    print(values)
+    return render_template("edit_employee.html",values=values,id=id, data=data,len_team=len(data))
+
+@app.route('/edit/Sprints/<id>',methods=['GET', 'POST'])
+def editSprint(id): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        sprint_id = request.form['sprint_id']
+        sprint_name = request.form['sprint_name']
+        sprint_start = request.form['sprint_start']
+        sprint_end = request.form['sprint_end']
+        sprint_team = request.form['sprint_team']
+        try:
+            database.source("update_sprint.sql",  sprint_name, sprint_start, sprint_end,sprint_id,output=False)
+            database.source("update_sprint_team.sql",  sprint_team,sprint_id,output=False)
+            return redirect(url_for('sprints'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    values=database.source("get_Sprint.sql",id)
+    print(values)
+
+    return render_template("edit_sprint.html", values=values,data=data, len_team=len(data),id=id)
+
+@app.route('/edit/Managers/<id>',methods=['GET', 'POST'])
+def editManager(id): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    print(data)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        team_id = request.form['team_id']
+        try:
+            database.source("update_managers.sql",team_id,id,output=False)
+
+            return redirect(url_for('managers'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    values=database.source("get_Manager.sql",id)
+    print(values)
+
+    return render_template("edit_manager.html", data=data, values=values,id=id,len_team=len(data))
+
+
+@app.route('/edit/Incidents/<id>',methods=['GET', 'POST'])
+def editIncident(id): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        inc_id = request.form['inc_id']
+        inc_description = request.form['inc_description']
+        inc_start = request.form['inc_start']
+        inc_status = request.form['inc_status']
+        inc_priority = request.form['inc_priority']
+        inc_sprint = request.form['inc_sprint']
+        inc_created = request.form['inc_created']
+        try:
+            database.source("update_incident_ticket.sql", inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,id,output=False)
+            return redirect(url_for('incidents'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    values=database.source("get_Incident.sql",id)
+    print(values)
+
+    return render_template("edit_incident.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
+@app.route('/edit/Requests/<id>',methods=['GET', 'POST'])
+def editRequest(id): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        req_description = request.form['req_description']
+        req_start = request.form['req_start']
+        req_status = request.form['req_status']
+        req_priority = request.form['req_priority']
+        req_sprint = request.form['req_sprint']
+        req_created = request.form['req_created']
+        try:
+            database.source("update_request_ticket.sql", req_description, req_start, req_status,req_priority,req_sprint,req_created,id,output=False)
+            return redirect(url_for('requests'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    values=database.source("get_Request.sql",id)
+    print(values)
+
+    return render_template("edit_request.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
+
+@app.route('/edit/Changes/<id>',methods=['GET', 'POST'])
+def editChange(id): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        chg_description = request.form['chg_description']
+        chg_start = request.form['chg_start']
+        chg_status = request.form['chg_status']
+        chg_priority = request.form['chg_priority']
+        chg_sprint = request.form['chg_sprint']
+        chg_created = request.form['chg_created']
+        chg_acceptor = request.form['chg_acceptor']
+        chg_implementor = request.form['chg_implementor']
+        try:
+            database.source("update_change_ticket.sql",chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,id,output=False)
+            return redirect(url_for('changes'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    values=database.source("get_Change.sql",id)
+    print(values)
+
+    return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
