@@ -35,13 +35,13 @@ toastr = Toastr(app)
 
 
 # this is for getting unique user access
-login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+# login_manager = LoginManager(app)
+# login_manager.login_view = 'login'
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+# @login_manager.user_loader
+# def load_user(user_id):
+#     return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -109,6 +109,16 @@ def employees():
 
     return render_template('teams.html', data=data, type="sprint", headings=headings)
 
+def getEmployeeIdAndName():
+    employees = database.source("all_employees.sql")
+    data = []
+    for val in employees:
+        row = [
+            val[0],
+            val[2]
+        ]
+        data.append(row)
+    return data
 
 @app.route('/allmanagers')
 def managers():
@@ -197,7 +207,7 @@ def changes():
 
     return render_template('teams.html', data=data, type="sprint", headings=headings)
 
-@app.route('/createteam',methods=['GET', 'POST'])
+@app.route('/createTeam',methods=['GET', 'POST'])
 def createTeam(): 
     if request.method == 'POST':
         team_id = request.form['team_id']
@@ -207,11 +217,39 @@ def createTeam():
         try:
             database.source("create_team.sql", team_id, team_name, team_description, team_location,output=False)
             return redirect(url_for('index'))
-        except mysql.IntegrityError as err:
+        except Exception as err:
             print(err)
             flash(err, 'error')
 
     return render_template("create_team.html")
+
+@app.route('/createIncident',methods=['GET', 'POST'])
+def createIncident(): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        inc_id = request.form['inc_id']
+        inc_description = request.form['inc_description']
+        inc_start = request.form['inc_start']
+        inc_status = request.form['inc_status']
+        inc_priority = request.form['inc_priority']
+        inc_sprint = request.form['inc_sprint']
+        inc_created = request.form['inc_created']
+        try:
+            database.source("create_incident_ticket.sql", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_incident.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
 if __name__ == '__main__':
     app.run(debug=True)
