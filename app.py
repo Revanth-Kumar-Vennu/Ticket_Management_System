@@ -413,6 +413,36 @@ def editTeam(id):
     print(values)
     return render_template("edit_team.html",values=values,id=id)
 
+@app.route('/delete/Incidents/<id>',methods=['GET', 'POST'])
+def deleteTeam(id): 
+    try:
+        print(id)
+        database.source("delete_incident_procedure.sql",id,output=False)
+    except Exception as err:
+        print(err)
+        flash(err, 'error')
+    return redirect(url_for('incidents'))
+
+@app.route('/delete/Requests/<id>',methods=['GET', 'POST'])
+def deleteRequest(id): 
+    try:
+        print(id)
+        database.source("delete_request_procedure.sql",id,output=False)
+    except Exception as err:
+        print(err)
+        flash(err, 'error')
+    return redirect(url_for('requests'))
+
+@app.route('/delete/Changes/<id>',methods=['GET', 'POST'])
+def deleteChange(id): 
+    try:
+        print(id)
+        database.source("delete_change_procedure.sql",id,output=False)
+    except Exception as err:
+        print(err)
+        flash(err, 'error')
+    return redirect(url_for('changes'))
+    
 @app.route('/edit/Employees/<id>',methods=['GET', 'POST'])
 def editEmployee(id): 
     team = database.source("all_team.sql")
@@ -592,8 +622,6 @@ def editChange(id):
     print(values)
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
