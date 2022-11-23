@@ -129,7 +129,7 @@ const showPage = (page) => {
 
     pages[page].forEach(record => {
         const tr = document.createElement('tr');
-        let id = record.id;
+        let id = record.ID;
         let type = options.type;
         Object.values(record).forEach(field => {
             const td = document.createElement('td');
