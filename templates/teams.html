@@ -59,13 +59,22 @@
     </div> -->
     <div class="container table-top">
         <div class="card shadow my-5">
-            <h4 class="card-header">Teams</h4>
+            <h4 class="card-header">{{type}}</h4>
             <div class="card-body">
-                <form class="mb-3">
-                    <label for="searchBox">Search table</label>
-                    <input type="text" onkeyup="filter(event)" id="searchBox" name="searchBox" class="form-control">
+                <form class="mb-3" style="width: 100%;">
+                    <div class="flex-parent-element">
+                    <div class="flex-child-element">
+                    <input type="text" onkeyup="filter(event)" id="searchBox" name="searchBox"  class="form-control" placeholder="Search {{name}}">
+                </div>
+                <div class="flex-child-element" >
+                    <button type="button" class="btn btn-outline-dark" onclick="location.href = '/create{{name}}';">Add new {{name}}</button>
+                </div>
+                    
+                </div>
                     <small class="form-text feedback"></small>
+                   
                 </form>
+               
                 <table id="easy-table"
                     class="table table-searchable table-striped table-bordered table-hover table-responsive">
                     <thead>

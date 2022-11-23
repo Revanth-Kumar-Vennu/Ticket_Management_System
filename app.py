@@ -63,7 +63,7 @@ def index1():
         data.append(row)
     headings = ["ID", "Team Name", "Description", "Location"]
 
-    return render_template('teams.html', data=data, type="team", headings=headings)
+    return render_template('teams.html', data=data, type="Teams",name="Team", headings=headings)
 
 
 @app.route('/allSprints')
@@ -81,7 +81,7 @@ def sprints():
         data.append(row)
     headings = ["ID", "Sprint Name", "Team name","Start Date", "End Date"]
 
-    return render_template('teams.html', data=data, type="sprint", headings=headings)
+    return render_template('teams.html', data=data, type="Sprints",name="Sprint", headings=headings)
 
 
 @app.route('/allEmployees')
@@ -107,7 +107,7 @@ def employees():
 
     headings = ["ID", "Team Name", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
 
-    return render_template('teams.html', data=data, type="employee", headings=headings)
+    return render_template('teams.html', data=data, type="Employees",name="Employee", headings=headings)
 
 
 @app.route('/allManagers')
@@ -123,7 +123,7 @@ def managers():
         data.append(row)
     headings = ["ID","Manager Name", "Team Name"]
 
-    return render_template('teams.html', data=data, type="manager", headings=headings)
+    return render_template('teams.html', data=data, type="Managers",name="Manager", headings=headings)
 
 @app.route('/allIncidents')
 def incidents():
@@ -146,7 +146,7 @@ def incidents():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
 
-    return render_template('teams.html', data=data, type="incident", headings=headings)
+    return render_template('teams.html', data=data, type="Incidents", name="Incident",headings=headings)
 
 
 @app.route('/allRequests')
@@ -170,7 +170,7 @@ def requests():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
 
-    return render_template('teams.html', data=data, type="request", headings=headings)
+    return render_template('teams.html', data=data, type="Requests", name="Request",headings=headings)
 
 @app.route('/allChanges')
 def changes():
@@ -184,8 +184,8 @@ def changes():
             val[3],
             val[4],
             val[9],
-            val[10],
             val[11],
+            val[10],
             val[12],
             val[13]
            
@@ -195,9 +195,9 @@ def changes():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By","Acceptor","Implementor"]
 
-    return render_template('teams.html', data=data, type="change", headings=headings)
+    return render_template('teams.html', data=data, type="Changes", name="Change", headings=headings)
 
-@app.route('/createteam',methods=['GET', 'POST'])
+@app.route('/createTeam',methods=['GET', 'POST'])
 def createTeam(): 
     if request.method == 'POST':
         team_id = request.form['team_id']

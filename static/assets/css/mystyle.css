@@ -33,3 +33,17 @@ td {
     text-align: center !important;
     vertical-align: middle !important;
 }
+.flex-parent-element {
+    display: flex;
+    width: 100%;
+  }
+  
+  .flex-child-element {
+    flex: 1;
+    margin: 10px;
+  }
+  
+  .flex-child-element:first-child {
+    margin-right: 10px;
+    width: 100%;
+  }
