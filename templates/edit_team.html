@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Team</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/static/assets/css/create.css" rel="stylesheet">
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+    
+</head>
+<script>
+    function getValues() {
+        var data='{{values|tojson|safe}}'
+        var data=JSON.parse(data)
+        console.log(data)
+      document.getElementById("team_id").value = data[0][0];
+      document.getElementById("team_name").value = data[0][1];
+      document.getElementById("team_description").value = data[0][2];
+      document.getElementById("team_location").value = data[0][3];
+    }
+    </script>
+
+<body onload="getValues()">
+   
+    {{ toastr.include_toastr_js() }}
+    
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/edit/Teams/{{id}}" method="post">
+                <h1> Edit Team Information</h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="team_id">Team ID:</label>
+                    <input type="text" id="team_id" name="team_id">
+
+                    <label for="team_name">Team Name:</label>
+                    <input type="text" id="team_name" name="team_name">
+
+                    <label for="team_description">Description:</label>
+                    <input type="text" id="team_description" name="team_description">
+                    <label for="team_location">Location:</label>
+                    <input type="text" id="team_location" name="team_location">
+
+                </fieldset>
+
+
+                <button type="submit">Submit Changes</button>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

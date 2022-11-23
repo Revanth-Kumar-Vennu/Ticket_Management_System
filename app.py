@@ -280,5 +280,26 @@ def createRequest():
 
     return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+
+
+@app.route('/edit/Teams/<id>',methods=['GET', 'POST'])
+def editTeam(id): 
+    if request.method == 'POST':
+        team_id = request.form['team_id']
+        team_name = request.form['team_name']
+        team_description = request.form['team_description']
+        team_location = request.form['team_location']
+        try:
+            database.source("update_team.sql", team_name, team_description, team_location,team_id,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+    
+    values=database.source("getTeam.sql",id)
+
+    print(values)
+    return render_template("edit_team.html",values=values,id=id)
+
 if __name__ == '__main__':
     app.run(debug=True)
