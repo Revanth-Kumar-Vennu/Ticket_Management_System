@@ -13,17 +13,6 @@
     {{ toastr.include_jquery() }}
     {{ toastr.include_toastr_css() }}
     {{ toastr.message() }}
-    <script type="text/javascript">
-        $("#sprint_end").change(function () {
-            var startDate = document.getElementById("sprint_start").value;
-            var endDate = document.getElementById("sprint_end").value;
-
-            if ((Date.parse(startDate) >= Date.parse(endDate))) {
-                alert("End date should be greater than Start date");
-                document.getElementById("sprint_end").value = "";
-            }
-        });
-    </script>
 </head>
 
 <body>

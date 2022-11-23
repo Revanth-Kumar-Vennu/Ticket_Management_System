@@ -336,6 +336,38 @@ def createSprint():
 
     return render_template("create_sprint.html", data=data, len_team=len(data))
 
+@app.route('/createEmployee',methods=['GET', 'POST'])
+def createEmployee(): 
+    team = database.source("all_team.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1]
+        ]
+        data.append(row)
+    if request.method == 'POST':
+        emp_id = request.form['emp_id']
+        team_id = request.form['team_id']
+        emp_name = request.form['emp_name']
+        date_of_birth = request.form['date_of_birth']
+        sex = request.form['sex']
+        address_street_name = request.form['address_street_name']
+        address_street_number = request.form['address_street_number']
+        address_zipcode = request.form['address_zipcode']
+        address_city = request.form['address_city']
+        address_state = request.form['address_state']
+        phone_number = request.form['phone_number']
+        joining_date = request.form['joining_date']
+        try:
+            database.source("create_employee.sql", emp_id,team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_employee.html", data=data, len_team=len(data))
+
 
 
 if __name__ == '__main__':
