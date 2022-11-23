@@ -49,7 +49,7 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/allteams')
+@app.route('/allTeams')
 def index1():
     team = database.source("all_team.sql")
     data = []
@@ -66,7 +66,7 @@ def index1():
     return render_template('teams.html', data=data, type="team", headings=headings)
 
 
-@app.route('/allsprints')
+@app.route('/allSprints')
 def sprints():
     team = database.source("all_sprints.sql")
     data = []
@@ -107,10 +107,10 @@ def employees():
 
     headings = ["ID", "Team Name", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
 
-    return render_template('teams.html', data=data, type="sprint", headings=headings)
+    return render_template('teams.html', data=data, type="employee", headings=headings)
 
 
-@app.route('/allmanagers')
+@app.route('/allManagers')
 def managers():
     team = database.source("all_managers.sql")
     data = []
@@ -146,7 +146,7 @@ def incidents():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
 
-    return render_template('teams.html', data=data, type="sprint", headings=headings)
+    return render_template('teams.html', data=data, type="incident", headings=headings)
 
 
 @app.route('/allRequests')
@@ -170,7 +170,7 @@ def requests():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
 
-    return render_template('teams.html', data=data, type="sprint", headings=headings)
+    return render_template('teams.html', data=data, type="request", headings=headings)
 
 @app.route('/allChanges')
 def changes():
@@ -195,7 +195,7 @@ def changes():
 
     headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By","Acceptor","Implementor"]
 
-    return render_template('teams.html', data=data, type="sprint", headings=headings)
+    return render_template('teams.html', data=data, type="change", headings=headings)
 
 @app.route('/createteam',methods=['GET', 'POST'])
 def createTeam(): 
