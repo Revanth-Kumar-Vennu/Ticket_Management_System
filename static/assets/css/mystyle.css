@@ -28,3 +28,8 @@ form label {
 .table-searchable td[data-searchable="false"] {
     background-color: lightcoral;
 }
+
+td {
+    text-align: center !important;
+    vertical-align: middle !important;
+}

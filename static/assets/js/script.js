@@ -91,6 +91,9 @@ const addPaginator = (options) => {
 //     paginatorContainer.innerHTML = pages.length > 1 ? `${paginatorContainer.innerHTML}<li onclick="nextPage()" class="page__btn"><span class="material-icons">chevron_right</span></li></ul>` : '';
 // }
 
+
+
+
 const nextPage = () => {
     if (currentPage < pages.length - 1) {
         showPage(currentPage + 1)
@@ -126,6 +129,8 @@ const showPage = (page) => {
 
     pages[page].forEach(record => {
         const tr = document.createElement('tr');
+        let id = record.id;
+        let type = options.type;
         Object.values(record).forEach(field => {
             const td = document.createElement('td');
             // if the current element is an iterable, content is added as a list of items
@@ -137,11 +142,23 @@ const showPage = (page) => {
                 field = content + '</ul>';
             }
             td.innerHTML = field;
+
             tr.appendChild(td);
+
         });
+        console.log(id);
+        const td_icons = document.createElement('td');
+        let icon_html = `<td data-searchable="false">
+              <div class="btn-group btn-group-sm" role="group">
+              <a href="/edit/${type}/${id}"><button type="button" class="btn btn-outline-dark"><i class="fas fa-pen"></i></button></a>
+              <a href="/delete/${type}/${id}"><button type="button" class="btn btn-outline-dark"><i class="fas fa-trash"></i></button></a>
+              </div>
+            </td>`
+        td_icons.innerHTML = icon_html;
+        tr.appendChild(td_icons);
         tableBody.appendChild(tr);
     });
-
+    console.log(tableBody);
     if (pages.length > 1) {
         paginatorButtons[pages.length + 1].disabled = (page + 1) == pages.length ? true : false;
         paginatorButtons[0].disabled = page == 0 ? true : false;
