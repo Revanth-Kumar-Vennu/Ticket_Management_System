@@ -6,26 +6,50 @@
     <title>Create an Incident</title>
     <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
     <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="css/main.css">
-    <link href="static/assets/css/create.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/static/assets/css/create.css" rel="stylesheet">
     {{ toastr.include_jquery() }}
     {{ toastr.include_toastr_css() }}
     {{ toastr.message() }}
 </head>
 
-<body>
+<script>
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + (date.getDate() + 1)).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    function getValues() {
+        var data = '{{values|tojson|safe}}'
+        var data = JSON.parse(data)
+        console.log(data)
+        document.getElementById("inc_id").value = data[0][0];
+        document.getElementById("inc_description").value = data[0][1];
+        document.getElementById("inc_start").value = convert(data[0][2]);
+        document.getElementById("inc_status").value = data[0][3];
+        document.getElementById("inc_priority").value = data[0][4];
+        document.getElementById("inc_sprint").value = data[0][5];
+        document.getElementById("inc_created").value = data[0][6];
+       
+
+
+    }
+</script>
+
+<body onload="getValues()">
     {{ toastr.include_toastr_js() }}
     <div class="row">
         <div class="col-md-12">
-            <form action="/createIncident" method="post">
-                <h1> Create an Incident </h1>
+            <form action="/edit/Incidents/{{id}}" method="post">
+                <h1> Edit Incident Info </h1>
 
                 <fieldset>
 
                     <legend><span class="number">1</span> Info</legend>
 
                     <label for="inc_id">Incident ID:</label>
-                    <input type="text" id="inc_id" name="inc_id" pattern="^INC[0-9]+$">
+                    <input type="text" id="inc_id" name="inc_id" pattern="^INC[0-9]+$" readonly>
 
                     <label for="inc_description">Incident Description:</label>
                     <input type="text" id="inc_description" name="inc_description">
@@ -71,7 +95,7 @@
                 </fieldset>
 
 
-                <button type="submit">Create</button>
+                <button type="submit">Submit Changes</button>
 
             </form>
         </div>

@@ -1,0 +1,106 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Incident</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/static/assets/css/create.css" rel="stylesheet">
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+
+<script>
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + (date.getDate() + 1)).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    function getValues() {
+        var data = '{{values|tojson|safe}}'
+        var data = JSON.parse(data)
+        console.log(data)
+        document.getElementById("req_id").value = data[0][0];
+        document.getElementById("req_description").value = data[0][1];
+        document.getElementById("req_start").value = convert(data[0][2]);
+        document.getElementById("req_status").value = data[0][3];
+        document.getElementById("req_priority").value = data[0][4];
+        document.getElementById("req_sprint").value = data[0][5];
+        document.getElementById("req_created").value = data[0][6];
+       
+
+
+    }
+</script>
+
+<body onload="getValues()">
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/edit/Requests/{{id}}" method="post">
+                <h1> Edit Request Info </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="req_id">Request ID:</label>
+                    <input type="text" id="req_id" name="req_id" pattern="^REQ[0-9]+$" readonly>
+
+                    <label for="req_description">Request Description:</label>
+                    <input type="text" id="req_description" name="req_description">
+
+                    <label for="req_start">Start Date:</label>
+                    <input type="date" id="req_start" name="req_start">
+
+                    <label for="req_status">Status:</label>
+                    <select id="req_status" name="req_status">
+                        <optgroup label="Incident Type">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Closed">Closed</option>
+                        </optgroup>
+                    </select>
+                    <label for="req_priority">Priority:</label>
+                    <select id="req_priority" name="req_priority">
+                        <optgroup label="Incident Priority">
+                            <option value="P1">P1</option>
+                            <option value="P2">P2</option>
+                            <option value="P3">P3</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="req_sprint">Sprint:</label>
+                    <select id="req_sprint" name="req_sprint">
+                        <optgroup label="Sprint Name">
+                            {% for i in range(len_sprint) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="req_created">Created By:</label>
+                    <select id="req_created" name="req_created">
+                        <optgroup label="Created By">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                </fieldset>
+
+
+                <button type="submit">Submit Changes</button>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

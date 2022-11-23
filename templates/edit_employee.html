@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Employee</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/main.css">
+    <link href="/static/assets/css/create.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+<script>
+    function convert(str) {
+        var date = new Date(str),
+            mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+            day = ("0" + (date.getDate() + 1)).slice(-2);
+        return [date.getFullYear(), mnth, day].join("-");
+    }
+    function getValues() {
+        var data = '{{values|tojson|safe}}'
+        var data = JSON.parse(data)
+        console.log(data)
+        document.getElementById("emp_id").value = data[0][0];
+        document.getElementById("team_id").value = data[0][1];
+        document.getElementById("emp_name").value = data[0][2];
+        document.getElementById("date_of_birth").value = convert(data[0][3]);
+        if (data[0][4] == "Male") {
+            document.getElementById("Male").checked = true;
+        }
+        else if (data[0][4] == "Female") {
+            document.getElementById("Female").checked = true;
+        }
+        else if (data[0][4] == "Other") {
+            document.getElementById("Other").checked = true;
+        }
+        document.getElementById("address_street_name").value = data[0][5];
+        document.getElementById("address_street_number").value = data[0][6];
+        document.getElementById("address_city").value = data[0][8];
+        document.getElementById("address_state").value = data[0][9];
+        document.getElementById("address_zipcode").value = data[0][7];
+        document.getElementById("phone_number").value = data[0][10];
+        document.getElementById("joining_date").value = convert(data[0][11]);
+
+
+    }
+</script>
+
+<body onload="getValues()">
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/edit/Employees/{{id}}" method="post">
+                <h1> Edit Employee Info</h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="emp_id">Employee ID:</label>
+                    <input type="text" id="emp_id" name="emp_id">
+
+                    <label for="team_id">Team:</label>
+                    <select id="team_id" name="team_id">
+                        <optgroup label="Team">
+                            {% for i in range(len_team) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="emp_name">Employee Name:</label>
+                    <input type="text" id="emp_name" name="emp_name">
+
+                    <label for="date_of_birth">Date of Birth:</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth">
+
+                    <label>Sex:</label>
+                    <input type="radio" id="Male" value="Male" name="sex"><label for="Male"
+                        class="light">Male</label><br>
+                    <input type="radio" id="Female" value="Female" name="sex"><label for="Female"
+                        class="light">Female</label>
+                    <input type="radio" id="Other" value="Other" name="sex"><label for="Other"
+                        class="light">Other</label>
+
+                    <label for="address_street_name">Address Street Name:</label>
+                    <input type="text" id="address_street_name" name="address_street_name">
+
+                    <label for="address_street_number">Address Street Number:</label>
+                    <input type="text" id="address_street_number" name="address_street_number">
+
+                    <label for="address_city">City:</label>
+                    <input type="text" id="address_city" name="address_city">
+
+                    <label for="address_state">State:</label>
+                    <input type="text" id="address_state" name="address_state">
+
+                    <label for="address_zipcode">Zipcode:</label>
+                    <input type="text" id="address_zipcode" name="address_zipcode">
+
+                    <label for="phone_number">Contact Number:</label>
+                    <input id="phone_number" type="text" name="phone_number" pattern="[7-9]{1}[0-9]{9}"
+                        title="Phone number with 7-9 and remaing 9 digit with 0-9">
+
+                    <label for="joining_date">Joining Date:</label>
+                    <input type="date" id="joining_date" name="joining_date">
+
+
+
+                </fieldset>
+
+
+                <button type="submit">Submit Changes</button>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
