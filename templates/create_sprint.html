@@ -8,9 +8,22 @@
     <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/main.css">
     <link href="static/assets/css/create.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     {{ toastr.include_jquery() }}
     {{ toastr.include_toastr_css() }}
     {{ toastr.message() }}
+    <script type="text/javascript">
+        $("#sprint_end").change(function () {
+            var startDate = document.getElementById("sprint_start").value;
+            var endDate = document.getElementById("sprint_end").value;
+
+            if ((Date.parse(startDate) >= Date.parse(endDate))) {
+                alert("End date should be greater than Start date");
+                document.getElementById("sprint_end").value = "";
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -52,7 +65,12 @@
             </form>
         </div>
     </div>
-
+    <script type="text/javascript">
+        $("#sprint_start").change(function () {
+            $("#sprint_end").prop("min", $(this).val());
+            $("#sprint_end").val(""); //clear end date input when start date changes
+        });
+    </script>
 </body>
 
 </html>
