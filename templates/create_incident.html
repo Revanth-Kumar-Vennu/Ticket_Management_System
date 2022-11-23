@@ -1,0 +1,83 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create an Incident</title>
+    <link rel="stylesheet" href="https://codepen.io/gymratpacks/pen/VKzBEp#0">
+    <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/main.css">
+    <link href="static/assets/css/create.css" rel="stylesheet">
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
+</head>
+
+<body>
+    {{ toastr.include_toastr_js() }}
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/createIncident" method="post">
+                <h1> Create an Incident </h1>
+
+                <fieldset>
+
+                    <legend><span class="number">1</span> Info</legend>
+
+                    <label for="inc_id">Incident ID:</label>
+                    <input type="text" id="inc_id" name="inc_id" pattern="^INC[0-9]+$">
+
+                    <label for="inc_description">Incident Description:</label>
+                    <input type="text" id="inc_description" name="inc_description">
+
+                    <label for="inc_start">Start Date:</label>
+                    <input type="date" id="inc_start" name="inc_start">
+
+                    <label for="inc_status">Status:</label>
+                    <select id="inc_status" name="inc_status">
+                        <optgroup label="Incident Type">
+                            <option value="Open">Open</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Closed">Closed</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="inc_priority">Priority:</label>
+                    <select id="inc_priority" name="inc_priority">
+                        <optgroup label="Incident Priority">
+                            <option value="P1">P1</option>
+                            <option value="P2">P2</option>
+                            <option value="P3">P3</option>
+                        </optgroup>
+                    </select>
+
+                    <label for="inc_sprint">Sprint:</label>
+                    <select id="inc_sprint" name="inc_sprint">
+                        <optgroup label="Sprint Name">
+                            {% for i in range(len_sprint) %}
+                            <option value="{{ data[i][0] }}">{{data[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                    <label for="inc_created">Created By:</label>
+                    <select id="inc_created" name="inc_created">
+                        <optgroup label="Created By">
+                            {% for i in range(len_employee) %}
+                            <option value="{{ employees[i][0] }}">{{employees[i][1]}}</option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
+
+                </fieldset>
+
+
+                <button type="submit">Create</button>
+
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>
