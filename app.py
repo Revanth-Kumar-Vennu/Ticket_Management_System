@@ -251,5 +251,34 @@ def createIncident():
 
     return render_template("create_incident.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+
+@app.route('/createRequest',methods=['GET', 'POST'])
+def createRequest(): 
+    sprints = database.source("all_sprints.sql")
+    data = []
+    for val in sprints:
+        row = [
+            val[0],
+            val[1],
+        ]
+        data.append(row)
+    employees = getEmployeeIdAndName()
+    if request.method == 'POST':
+        req_id = request.form['req_id']
+        req_description = request.form['req_description']
+        req_start = request.form['req_start']
+        req_status = request.form['req_status']
+        req_priority = request.form['req_priority']
+        req_sprint = request.form['req_sprint']
+        req_created = request.form['req_created']
+        try:
+            database.source("create_request_ticket.sql", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
+            return redirect(url_for('index'))
+        except Exception as err:
+            print(err)
+            flash(err, 'error')
+
+    return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
+
 if __name__ == '__main__':
     app.run(debug=True)
