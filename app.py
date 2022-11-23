@@ -74,11 +74,12 @@ def sprints():
         row = [
             val[0],
             val[1],
-            val[2],
-            val[3]
+            val[4],
+            val[2].strftime("%b %d, %Y"),
+            val[3].strftime("%b %d, %Y")
         ]
         data.append(row)
-    headings = ["ID", "Sprint Name", "Start Date", "End Date"]
+    headings = ["ID", "Sprint Name", "Team name","Start Date", "End Date"]
 
     return render_template('teams.html', data=data, type="sprint", headings=headings)
 
@@ -92,19 +93,19 @@ def employees():
             val[0],
             val[12],
             val[2],
-            val[3],
+            val[3].strftime("%b %d, %Y"),
             val[4],
             val[6] +" "+ 
             val[5] +", "+ 
-            val[9] +", "+ 
             val[8] +", "+ 
+            val[9] +", "+ 
             val[7],
             val[10],
-            val[11]
+            val[11].strftime("%b %d, %Y")
         ]
         data.append(row)
 
-    headings = ["ID", "Team ID", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
+    headings = ["ID", "Team Name", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
 
     return render_template('teams.html', data=data, type="sprint", headings=headings)
 
@@ -124,6 +125,77 @@ def managers():
 
     return render_template('teams.html', data=data, type="manager", headings=headings)
 
+@app.route('/allIncidents')
+def incidents():
+    team = database.source("all_incident_ticket.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1],
+            val[2].strftime("%b %d, %Y"),
+            val[3],
+            val[4],
+            val[7],
+            val[9],
+            val[8]
+           
+        ]
+        data.append(row)
+
+
+    headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
+
+    return render_template('teams.html', data=data, type="sprint", headings=headings)
+
+
+@app.route('/allRequests')
+def requests():
+    team = database.source("all_requests_tickets.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1],
+            val[2].strftime("%b %d, %Y"),
+            val[3],
+            val[4],
+            val[7],
+            val[9],
+            val[8]
+           
+        ]
+        data.append(row)
+
+
+    headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By"]
+
+    return render_template('teams.html', data=data, type="sprint", headings=headings)
+
+@app.route('/allChanges')
+def changes():
+    team = database.source("all_change_tickets.sql")
+    data = []
+    for val in team:
+        row = [
+            val[0],
+            val[1],
+            val[2].strftime("%b %d, %Y"),
+            val[3],
+            val[4],
+            val[9],
+            val[10],
+            val[11],
+            val[12],
+            val[13]
+           
+        ]
+        data.append(row)
+
+
+    headings = ["ID", "Description", "Start date", "Status","Priority","Sprint Name","Team Name","Created By","Acceptor","Implementor"]
+
+    return render_template('teams.html', data=data, type="sprint", headings=headings)
 
 @app.route('/createteam',methods=['GET', 'POST'])
 def createTeam(): 
