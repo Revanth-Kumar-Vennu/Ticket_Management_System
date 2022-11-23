@@ -210,12 +210,12 @@ def changes():
 @app.route('/createTeam',methods=['GET', 'POST'])
 def createTeam(): 
     if request.method == 'POST':
-        team_id = request.form['team_id']
+        # team_id = request.form['team_id']
         team_name = request.form['team_name']
         team_description = request.form['team_description']
         team_location = request.form['team_location']
         try:
-            database.source("create_team.sql", team_id, team_name, team_description, team_location,output=False)
+            database.source("create_team.sql", team_name, team_description, team_location,output=False)
             return redirect(url_for('index'))
         except Exception as err:
             print(err)
@@ -322,14 +322,16 @@ def createSprint():
         ]
         data.append(row)
     if request.method == 'POST':
-        sprint_id = request.form['sprint_id']
+        # sprint_id = request.form['sprint_id']
         sprint_name = request.form['sprint_name']
         sprint_start = request.form['sprint_start']
         sprint_end = request.form['sprint_end']
         sprint_team = request.form['sprint_team']
         try:
-            database.source("create_sprint.sql", sprint_id, sprint_name, sprint_start, sprint_end,output=False)
-            database.source("create_sprint_team.sql", sprint_id, sprint_team,output=False)
+            database.source("create_sprint.sql", sprint_name, sprint_start, sprint_end,output=False)
+            sprint_id=database.source("get_latest_sprint_id.sql")
+            print(sprint_id)
+            database.source("create_sprint_team.sql", sprint_id[0][0], sprint_team,output=False)
             return redirect(url_for('index'))
         except Exception as err:
             print(err)
@@ -348,7 +350,7 @@ def createEmployee():
         ]
         data.append(row)
     if request.method == 'POST':
-        emp_id = request.form['emp_id']
+        # emp_id = request.form['emp_id']
         team_id = request.form['team_id']
         emp_name = request.form['emp_name']
         date_of_birth = request.form['date_of_birth']
@@ -361,7 +363,7 @@ def createEmployee():
         phone_number = request.form['phone_number']
         joining_date = request.form['joining_date']
         try:
-            database.source("create_employee.sql", emp_id,team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
+            database.source("create_employee.sql",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
             return redirect(url_for('index'))
         except Exception as err:
             print(err)
