@@ -625,5 +625,16 @@ def editChange(id):
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
+
+@app.route('/getChart',methods=['GET', 'POST'])
+def renderChart():
+    if request.method == 'POST':
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+
+    return render_template('render_chart.html')
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
