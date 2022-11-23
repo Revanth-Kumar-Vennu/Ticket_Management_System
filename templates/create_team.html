@@ -12,12 +12,21 @@
     {{ toastr.include_toastr_css() }}
     {{ toastr.message() }}
 </head>
+<script>
+    function validateForm() {
+  let x = document.forms["myForm"]["team_name"].value;
+  if (x == "") {
+    alert("Team name not provided, please provide a name and submit.");
+    return false;
+  }
+}
+</script>
 
 <body>
     {{ toastr.include_toastr_js() }}
     <div class="row">
         <div class="col-md-12">
-            <form action="/createTeam" method="post">
+            <form action="/createTeam" method="post" name="myForm" >
                 <h1> Create a Team </h1>
 
                 <fieldset>
@@ -28,7 +37,7 @@
                     <input type="text" id="team_id" name="team_id"> -->
 
                     <label for="team_name">Team Name:</label>
-                    <input type="text" id="team_name" name="team_name">
+                    <input type="text" id="team_name" name="team_name" required="required" >
 
                     <label for="team_description">Description:</label>
                     <input type="text" id="team_description" name="team_description">

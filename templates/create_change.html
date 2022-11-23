@@ -25,13 +25,13 @@
                     <legend><span class="number">1</span> Info</legend>
 
                     <label for="chg_id">Change ID (Should begin with CHG):</label>
-                    <input type="text" id="chg_id" name="chg_id" pattern="^CHG[0-9]+$">
+                    <input type="text" id="chg_id" name="chg_id" pattern="^CHG[0-9]+$" required="required"  title="Change ID should begin with CHG">
 
                     <label for="chg_description">Change Description:</label>
                     <input type="text" id="chg_description" name="chg_description">
 
                     <label for="chg_start">Start Date:</label>
-                    <input type="date" id="chg_start" name="chg_start">
+                    <input type="date" id="chg_start" name="chg_start" required="required">
 
                     <label for="chg_status">Status:</label>
                     <select id="chg_status" name="chg_status">

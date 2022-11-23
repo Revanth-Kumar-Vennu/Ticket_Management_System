@@ -25,13 +25,13 @@
                     <legend><span class="number">1</span> Info</legend>
 
                     <label for="req_id">Request ID (Should begin with REQ):</label>
-                    <input type="text" id="req_id" name="req_id" pattern="^REQ[0-9]+$">
+                    <input type="text" id="req_id" name="req_id" pattern="^REQ[0-9]+$" required="required" title="Request ID should begin with REQ">
 
                     <label for="req_description">Request Description:</label>
                     <input type="text" id="req_description" name="req_description">
 
                     <label for="req_start">Start Date:</label>
-                    <input type="date" id="req_start" name="req_start">
+                    <input type="date" id="req_start" name="req_start" required="required">
 
                     <label for="req_status">Status:</label>
                     <select id="req_status" name="req_status">

@@ -152,7 +152,7 @@ const showPage = (page) => {
               <div class="btn-group btn-group-sm" role="group">
               <a href="/edit/${type}/${id}"><button type="button" class="btn btn-outline-dark"><i class="fas fa-pen"></i></button></a>`
 
-        if (type == "Incidents" || type == "Changes" || type == "Requests") {
+        if (type == "Incidents" || type == "Changes" || type == "Requests" || type == "Managers") {
             icon_html += `<a href="#myModal" class="trigger-btn" data-toggle="modal" data-url="/delete/${type}/${id}"><button  type="button" class="btn btn-outline-dark"><i class="fas fa-trash"></i></button></a>`
 
         }

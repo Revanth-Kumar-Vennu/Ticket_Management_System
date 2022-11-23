@@ -216,7 +216,7 @@ def createTeam():
         team_location = request.form['team_location']
         try:
             database.source("create_team.sql", team_name, team_description, team_location,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('allTeams'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -332,7 +332,7 @@ def createSprint():
             sprint_id=database.source("get_latest_sprint_id.sql")
             print(sprint_id)
             database.source("create_sprint_team.sql", sprint_id[0][0], sprint_team,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('sprints'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -444,6 +444,16 @@ def deleteChange(id):
         print(err)
         flash(err, 'error')
     return redirect(url_for('changes'))
+
+@app.route('/delete/Managers/<id>',methods=['GET', 'POST'])
+def deleteManager(id): 
+    try:
+        print(id)
+        database.source("delete_manager.sql",id,output=False)
+    except Exception as err:
+        print(err)
+        flash(err, 'error')
+    return redirect(url_for('managers'))
     
 @app.route('/edit/Employees/<id>',methods=['GET', 'POST'])
 def editEmployee(id): 
