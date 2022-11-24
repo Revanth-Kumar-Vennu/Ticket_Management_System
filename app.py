@@ -216,7 +216,7 @@ def createTeam():
         team_location = request.form['team_location']
         try:
             database.source("create_team.sql", team_name, team_description, team_location,output=False)
-            return redirect(url_for('allTeams'))
+            return redirect(url_for(''))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -635,7 +635,6 @@ def editChange(id):
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
-
 @app.route('/getChart',methods=['GET', 'POST'])
 def renderChart():
     data = []
@@ -653,7 +652,40 @@ def renderChart():
         print(data)
     return render_template('render_chart.html',data=data)
 
+@app.route('/getDataInsights',methods=['GET', 'POST'])
+def renderChartInsights():
+    inc_data = []
+    req_data=[]
+    chg_data=[]
+    incident_tickets = database.source("get_incident_status.sql")
+    request_tickets = database.source("get_request_status.sql")
+    change_tickets=database.source("get_change_status.sql")
+    for val in incident_tickets:
+        row = [
+                str(val[0]),
+                val[1],
+            ]
+        inc_data.append(row)
+    print(inc_data)
+    for val in request_tickets:
+        row = [
+                str(val[0]),
+                val[1],
+            ]
+        req_data.append(row)
+    print(req_data)
+    for val in change_tickets:
+        row = [
+                str(val[0]),
+                val[1],
+            ]
+        chg_data.append(row)
+    print(chg_data)
+    number_of_tickets_per_team=database.source("get_number_of_tickets_per_team.sql")
+    number_of_tickets_per_priority=database.source("get_tickets_by_priority.sql")
+    print(number_of_tickets_per_team)
 
+    return render_template('charts.html',inc_data=inc_data,req_data=req_data,chg_data=chg_data,number_of_tickets_per_team=number_of_tickets_per_team,number_of_tickets_per_priority=number_of_tickets_per_priority)
 
 if __name__ == '__main__':
     app.run(debug=True)
