@@ -1,1 +1,1 @@
-delete from manager where emp_id=%s;
+call deleteManager(%s);
