@@ -244,7 +244,7 @@ def createIncident():
         inc_created = request.form['inc_created']
         try:
             database.source("create_incident_ticket.sql", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('incidents'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -273,7 +273,7 @@ def createRequest():
         req_created = request.form['req_created']
         try:
             database.source("create_request_ticket.sql", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('requests'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -304,7 +304,7 @@ def createChange():
         chg_implementor = request.form['chg_implementor']
         try:
             database.source("create_change_ticket.sql", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('changes'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -364,7 +364,7 @@ def createEmployee():
         joining_date = request.form['joining_date']
         try:
             database.source("create_employee.sql",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
-            return redirect(url_for('index'))
+            return redirect(url_for('employees'))
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -388,7 +388,7 @@ def createManager():
         try:
             database.source("create_manager.sql", emp_id,team_id,output=False)
 
-            return redirect(url_for('index'))
+            return redirect(url_for('managers'))
         except Exception as err:
             print(err)
             flash(err, 'error')
