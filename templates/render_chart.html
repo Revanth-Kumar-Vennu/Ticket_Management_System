@@ -33,6 +33,7 @@
     <!-- Template Main CSS File -->
     <link href="static/assets/css/style.css" rel="stylesheet">
     <link href="static/assets/css/mystyle.css" rel="stylesheet">
+    <link href="static/assets/css/create.css" rel="stylesheet">
     <link href="static/assets/css/modalStyle.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>
 </head>
@@ -46,20 +47,20 @@
         <div class="card shadow my-5">
             <h4 class="card-header">Tickets Over a Period of Time</h4>
             <div class="card-body">
-                <form class="mb-3" style="width: 100%;" action="/getChart" method="post">
+                <form class="mb-3" style="width: 100%;display:flex;" action="/getChart" method="post">
                     <div class="flex-parent-element">
                         <div class="flex-child-element">
                             <label for="start_date">Start Date:</label>
-                            <input type="date" id="start_date" name="start_date">
+                            <input type="date" id="start_date" name="start_date" required="required">
                         </div>
                         <div class="flex-child-element">
                             <label for="end_date">End Date:</label>
-                            <input type="date" id="end_date" name="end_date">
+                            <input type="date" id="end_date" name="end_date" required="required">
                         </div>
 
                     </div>
                     <small class="form-text feedback"></small>
-                    <button type="submit">Create</button>
+                    <button style="height:30%;width:40%;margin-top:7%" type="submit">Generate</button>
                 </form>
                 <canvas id="line-chart" width="800" height="450"></canvas>
 
@@ -77,6 +78,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
     </script>
     <script type="text/javascript">
+        $("#start_date").change(function () {
+            $("#end_date").prop("min", $(this).val());
+            $("#end_date").val(""); //clear end date input when start date changes
+        });
         var old_data = '{{data|tojson|safe}}'
         old_data = JSON.parse(old_data)
         console.log(old_data)
