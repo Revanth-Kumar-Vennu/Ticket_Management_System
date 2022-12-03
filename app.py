@@ -642,7 +642,7 @@ def renderChart():
         start_date = request.form['start_date']
         end_date = request.form['end_date']
         print(start_date,end_date)
-        tickets = database.source("get_tickets_between_dates.sql",start_date,end_date,start_date,end_date,start_date,end_date)
+        tickets = database.sourceProc("getTicketsBetweenDates",start_date,end_date)
         for val in tickets:
             row = [
                 str(val[0]),
@@ -681,7 +681,7 @@ def renderChartInsights():
             ]
         chg_data.append(row)
     print(chg_data)
-    number_of_tickets_per_team=database.source("get_number_of_tickets_per_team.sql")
+    number_of_tickets_per_team=database.sourceProc('getNumberOfTickersPerTeam')
     number_of_tickets_per_priority=database.source("get_tickets_by_priority.sql")
     print(number_of_tickets_per_team)
 

@@ -50,6 +50,24 @@ def source(filename, *args, output=True, lastRowId=False):
 
     if output:
         result = cursor.fetchall()
+        
+    if lastRowId:
+        result = cursor.lastrowid
+    conn.commit()
+    cursor.close()
+    if output or lastRowId:
+        return result
+
+def sourceProc(procedure, *args, output=True, lastRowId=False):
+    cursor = conn.cursor(buffered=output)
+    if args:
+        cursor.callproc(procedure, args) if procedure else None
+    else:
+        cursor.callproc(procedure) if procedure else None
+    if output:
+        for res in cursor.stored_results():
+            result = res.fetchall()        
+        
     if lastRowId:
         result = cursor.lastrowid
     conn.commit()
