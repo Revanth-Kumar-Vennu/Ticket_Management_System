@@ -1,1 +1,0 @@
-call deleteManager(%s);

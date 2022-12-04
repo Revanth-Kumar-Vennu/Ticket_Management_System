@@ -1,1 +1,0 @@
-select sprint_id from sprint ORDER by sprint_id DESC limit 1;

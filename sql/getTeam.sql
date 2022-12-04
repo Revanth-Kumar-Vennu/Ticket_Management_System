@@ -1,1 +1,0 @@
-select * from team where team_id=%s;

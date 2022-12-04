@@ -1,1 +1,0 @@
-CALL deleteRequest(%s);

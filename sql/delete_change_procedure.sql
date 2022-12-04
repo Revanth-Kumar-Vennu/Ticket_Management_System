@@ -1,1 +1,0 @@
-CALL deleteChange(%s);

@@ -51,7 +51,7 @@ def index():
 
 @app.route('/allTeams')
 def allTeams():
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -68,7 +68,7 @@ def allTeams():
 
 @app.route('/allSprints')
 def sprints():
-    team = database.source("all_sprints.sql")
+    team = database.sourceProc("getAllSprints")
     data = []
     for val in team:
         row = [
@@ -86,7 +86,7 @@ def sprints():
 
 @app.route('/allEmployees')
 def employees():
-    team = database.source("all_employees.sql")
+    team = database.sourceProc("getAllEmployees")
     data = []
     for val in team:
         row = [
@@ -110,7 +110,7 @@ def employees():
     return render_template('teams.html', data=data, type="Employees",name="Employee", headings=headings)
 
 def getEmployeeIdAndName():
-    employees = database.source("all_employees.sql")
+    employees = database.sourceProc("getAllEmployees")
     data = []
     for val in employees:
         row = [
@@ -122,7 +122,7 @@ def getEmployeeIdAndName():
 
 @app.route('/allManagers')
 def managers():
-    team = database.source("all_managers.sql")
+    team = database.sourceProc("getAllManagers")
     data = []
     for val in team:
         row = [
@@ -137,7 +137,7 @@ def managers():
 
 @app.route('/allIncidents')
 def incidents():
-    team = database.source("all_incident_ticket.sql")
+    team = database.sourceProc("getAllIncidents")
     data = []
     for val in team:
         row = [
@@ -161,7 +161,7 @@ def incidents():
 
 @app.route('/allRequests')
 def requests():
-    team = database.source("all_requests_tickets.sql")
+    team = database.sourceProc("getAllRequests")
     data = []
     for val in team:
         row = [
@@ -184,7 +184,7 @@ def requests():
 
 @app.route('/allChanges')
 def changes():
-    team = database.source("all_change_tickets.sql")
+    team = database.sourceProc("getAllChanges")
     data = []
     for val in team:
         row = [
@@ -215,8 +215,10 @@ def createTeam():
         team_description = request.form['team_description']
         team_location = request.form['team_location']
         try:
-            database.source("create_team.sql", team_name, team_description, team_location,output=False)
-            return redirect(url_for(''))
+            # database.source("create_team.sql", team_name, team_description, team_location,output=False)
+            database.sourceProc("createTeam", team_name, team_description, team_location,output=False)
+            return redirect(url_for('allTeams'))
+            
         except Exception as err:
             print(err)
             flash(err, 'error')
@@ -225,7 +227,7 @@ def createTeam():
 
 @app.route('/createIncident',methods=['GET', 'POST'])
 def createIncident(): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -243,7 +245,7 @@ def createIncident():
         inc_sprint = request.form['inc_sprint']
         inc_created = request.form['inc_created']
         try:
-            database.source("create_incident_ticket.sql", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
+            database.sourceProc("createIncident", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
             return redirect(url_for('incidents'))
         except Exception as err:
             print(err)
@@ -254,7 +256,7 @@ def createIncident():
 
 @app.route('/createRequest',methods=['GET', 'POST'])
 def createRequest(): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -272,7 +274,7 @@ def createRequest():
         req_sprint = request.form['req_sprint']
         req_created = request.form['req_created']
         try:
-            database.source("create_request_ticket.sql", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
+            database.sourceProc("createRequest", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
             return redirect(url_for('requests'))
         except Exception as err:
             print(err)
@@ -283,7 +285,7 @@ def createRequest():
 
 @app.route('/createChange',methods=['GET', 'POST'])
 def createChange(): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -303,7 +305,7 @@ def createChange():
         chg_acceptor = request.form['chg_acceptor']
         chg_implementor = request.form['chg_implementor']
         try:
-            database.source("create_change_ticket.sql", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
+            database.sourceProc("createChange", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
             return redirect(url_for('changes'))
         except Exception as err:
             print(err)
@@ -313,7 +315,7 @@ def createChange():
 
 @app.route('/createSprint',methods=['GET', 'POST'])
 def createSprint(): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -328,10 +330,10 @@ def createSprint():
         sprint_end = request.form['sprint_end']
         sprint_team = request.form['sprint_team']
         try:
-            database.source("create_sprint.sql", sprint_name, sprint_start, sprint_end,output=False)
-            sprint_id=database.source("get_latest_sprint_id.sql")
+            database.sourceProc("createSprint", sprint_name, sprint_start, sprint_end,output=False)
+            sprint_id=database.sourceProc("getLatestSprintID")
             print(sprint_id)
-            database.source("create_sprint_team.sql", sprint_id[0][0], sprint_team,output=False)
+            database.sourceProc("createSprintTeam", sprint_id[0][0], sprint_team,output=False)
             return redirect(url_for('sprints'))
         except Exception as err:
             print(err)
@@ -341,7 +343,7 @@ def createSprint():
 
 @app.route('/createEmployee',methods=['GET', 'POST'])
 def createEmployee(): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -363,7 +365,7 @@ def createEmployee():
         phone_number = request.form['phone_number']
         joining_date = request.form['joining_date']
         try:
-            database.source("create_employee.sql",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
+            database.sourceProc("createEmployee",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
             return redirect(url_for('employees'))
         except Exception as err:
             print(err)
@@ -373,7 +375,7 @@ def createEmployee():
 
 @app.route('/createManager',methods=['GET', 'POST'])
 def createManager(): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -386,7 +388,7 @@ def createManager():
         emp_id = request.form['emp_id']
         team_id = request.form['team_id']
         try:
-            database.source("create_manager.sql", emp_id,team_id,output=False)
+            database.sourceProc("createManager", emp_id,team_id,output=False)
 
             return redirect(url_for('managers'))
         except Exception as err:
@@ -404,13 +406,13 @@ def editTeam(id):
         team_description = request.form['team_description']
         team_location = request.form['team_location']
         try:
-            database.source("update_team.sql", team_name, team_description, team_location,team_id,output=False)
+            database.sourceProc("updateTeam", team_name, team_description, team_location,team_id,output=False)
             return redirect(url_for('allTeams'))
         except Exception as err:
             print(err)
             flash(err, 'error')
     
-    values=database.source("getTeam.sql",id)
+    values=database.sourceProc("getTeam",id)
 
     print(values)
     return render_template("edit_team.html",values=values,id=id)
@@ -419,7 +421,7 @@ def editTeam(id):
 def deleteTeam(id): 
     try:
         print(id)
-        database.source("delete_incident_procedure.sql",id,output=False)
+        database.sourceProc("deleteIncident",id,output=False)
     except Exception as err:
         print(err)
         flash(err, 'error')
@@ -429,7 +431,7 @@ def deleteTeam(id):
 def deleteRequest(id): 
     try:
         print(id)
-        database.source("delete_request_procedure.sql",id,output=False)
+        database.sourceProc("deleteRequest",id,output=False)
     except Exception as err:
         print(err)
         flash(err, 'error')
@@ -439,7 +441,7 @@ def deleteRequest(id):
 def deleteChange(id): 
     try:
         print(id)
-        database.source("delete_change_procedure.sql",id,output=False)
+        database.sourceProc("deleteChange",id,output=False)
     except Exception as err:
         print(err)
         flash(err, 'error')
@@ -449,7 +451,7 @@ def deleteChange(id):
 def deleteManager(id): 
     try:
         print(id)
-        database.source("delete_manager.sql",id,output=False)
+        database.sourceProc("deleteManager",id,output=False)
     except Exception as err:
         print(err)
         flash(err, 'error')
@@ -457,7 +459,7 @@ def deleteManager(id):
     
 @app.route('/edit/Employees/<id>',methods=['GET', 'POST'])
 def editEmployee(id): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -479,19 +481,19 @@ def editEmployee(id):
         phone_number = request.form['phone_number']
         joining_date = request.form['joining_date']
         try:
-            database.source("update_employee.sql",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,emp_id,output=False)
+            database.sourceProc("updateEmployee",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,emp_id,output=False)
             return redirect(url_for('employees'))
         except Exception as err:
             print(err)
             flash(err, 'error')
     
-    values=database.source("get_Employee.sql",id)
+    values=database.sourceProc("getEmployee",id)
     print(values)
     return render_template("edit_employee.html",values=values,id=id, data=data,len_team=len(data))
 
 @app.route('/edit/Sprints/<id>',methods=['GET', 'POST'])
 def editSprint(id): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -506,20 +508,20 @@ def editSprint(id):
         sprint_end = request.form['sprint_end']
         sprint_team = request.form['sprint_team']
         try:
-            database.source("update_sprint.sql",  sprint_name, sprint_start, sprint_end,sprint_id,output=False)
-            database.source("update_sprint_team.sql",  sprint_team,sprint_id,output=False)
+            database.sourceProc("updateSprint",  sprint_name, sprint_start, sprint_end,sprint_id,output=False)
+            database.sourceProc("updateSprintTeam",  sprint_team,sprint_id,output=False)
             return redirect(url_for('sprints'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-    values=database.source("get_Sprint.sql",id)
+    values=database.sourceProc("getSprint",id)
     print(values)
 
     return render_template("edit_sprint.html", values=values,data=data, len_team=len(data),id=id)
 
 @app.route('/edit/Managers/<id>',methods=['GET', 'POST'])
 def editManager(id): 
-    team = database.source("all_team.sql")
+    team = database.sourceProc("getAllTeams")
     data = []
     for val in team:
         row = [
@@ -532,13 +534,13 @@ def editManager(id):
     if request.method == 'POST':
         team_id = request.form['team_id']
         try:
-            database.source("update_managers.sql",team_id,id,output=False)
+            database.sourceProc("updateManager",team_id,id,output=False)
 
             return redirect(url_for('managers'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-    values=database.source("get_Manager.sql",id)
+    values=database.sourceProc("getManager",id)
     print(values)
 
     return render_template("edit_manager.html", data=data, values=values,id=id,len_team=len(data))
@@ -546,7 +548,7 @@ def editManager(id):
 
 @app.route('/edit/Incidents/<id>',methods=['GET', 'POST'])
 def editIncident(id): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -564,19 +566,19 @@ def editIncident(id):
         inc_sprint = request.form['inc_sprint']
         inc_created = request.form['inc_created']
         try:
-            database.source("update_incident_ticket.sql", inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,id,output=False)
+            database.sourceProc("updateIncident", inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,id,output=False)
             return redirect(url_for('incidents'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-    values=database.source("get_Incident.sql",id)
+    values=database.sourceProc("getIncident",id)
     print(values)
 
     return render_template("edit_incident.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
 @app.route('/edit/Requests/<id>',methods=['GET', 'POST'])
 def editRequest(id): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -593,12 +595,12 @@ def editRequest(id):
         req_sprint = request.form['req_sprint']
         req_created = request.form['req_created']
         try:
-            database.source("update_request_ticket.sql", req_description, req_start, req_status,req_priority,req_sprint,req_created,id,output=False)
+            database.sourceProc("updateRequest", req_description, req_start, req_status,req_priority,req_sprint,req_created,id,output=False)
             return redirect(url_for('requests'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-    values=database.source("get_Request.sql",id)
+    values=database.sourceProc("getRequest",id)
     print(values)
 
     return render_template("edit_request.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
@@ -606,7 +608,7 @@ def editRequest(id):
 
 @app.route('/edit/Changes/<id>',methods=['GET', 'POST'])
 def editChange(id): 
-    sprints = database.source("all_sprints.sql")
+    sprints = database.sourceProc("getAllSprints")
     data = []
     for val in sprints:
         row = [
@@ -625,12 +627,12 @@ def editChange(id):
         chg_acceptor = request.form['chg_acceptor']
         chg_implementor = request.form['chg_implementor']
         try:
-            database.source("update_change_ticket.sql",chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,id,output=False)
+            database.sourceProc("updateChange",chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,id,output=False)
             return redirect(url_for('changes'))
         except Exception as err:
             print(err)
             flash(err, 'error')
-    values=database.source("get_Change.sql",id)
+    values=database.sourceProc("getChange",id)
     print(values)
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
@@ -657,9 +659,9 @@ def renderChartInsights():
     inc_data = []
     req_data=[]
     chg_data=[]
-    incident_tickets = database.source("get_incident_status.sql")
-    request_tickets = database.source("get_request_status.sql")
-    change_tickets=database.source("get_change_status.sql")
+    incident_tickets = database.sourceProc("getIncidentStatus")
+    request_tickets = database.sourceProc("getRequestStatus")
+    change_tickets=database.sourceProc("getChangeStatus")
     for val in incident_tickets:
         row = [
                 str(val[0]),
@@ -682,7 +684,7 @@ def renderChartInsights():
         chg_data.append(row)
     print(chg_data)
     number_of_tickets_per_team=database.sourceProc('getNumberOfTickersPerTeam')
-    number_of_tickets_per_priority=database.source("get_tickets_by_priority.sql")
+    number_of_tickets_per_priority=database.sourceProc("getTicketsByPriority")
     print(number_of_tickets_per_team)
 
     return render_template('charts.html',inc_data=inc_data,req_data=req_data,chg_data=chg_data,number_of_tickets_per_team=number_of_tickets_per_team,number_of_tickets_per_priority=number_of_tickets_per_priority)

@@ -1,1 +1,0 @@
-select status, count(status) as number_of_tickets from incident_ticket group by status;
