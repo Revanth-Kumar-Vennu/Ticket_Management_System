@@ -220,7 +220,6 @@ def createTeam():
             return redirect(url_for('allTeams'))
             
         except Exception as err:
-            print(err)
             flash(err, 'error')
 
     return render_template("create_team.html")
@@ -248,9 +247,11 @@ def createIncident():
             database.sourceProc("createIncident", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
             return redirect(url_for('incidents'))
         except Exception as err:
-            print(err)
-            flash(err, 'error')
-
+            error=str(err)
+            if 'incident_ticket.PRIMARY' in error:
+                flash("Provided Incident ID already exists, please provide another Incident ID", 'error')
+            else:
+                flash(err, 'error')
     return render_template("create_incident.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
 
@@ -277,8 +278,11 @@ def createRequest():
             database.sourceProc("createRequest", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
             return redirect(url_for('requests'))
         except Exception as err:
-            print(err)
-            flash(err, 'error')
+            error=str(err)
+            if 'request_ticket.PRIMARY' in error:
+                flash("Provided Request ID already exists, please provide another Request ID", 'error')
+            else:
+                flash(err, 'error')
 
     return render_template("create_request.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
@@ -308,8 +312,11 @@ def createChange():
             database.sourceProc("createChange", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
             return redirect(url_for('changes'))
         except Exception as err:
-            print(err)
-            flash(err, 'error')
+            error=str(err)
+            if 'change_ticket.PRIMARY' in error:
+                flash("Provided Change ID already exists, please provide another Change ID", 'error')
+            else:
+                flash(err, 'error')
 
     return render_template("create_change.html", data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
@@ -332,11 +339,10 @@ def createSprint():
         try:
             database.sourceProc("createSprint", sprint_name, sprint_start, sprint_end,output=False)
             sprint_id=database.sourceProc("getLatestSprintID")
-            print(sprint_id)
             database.sourceProc("createSprintTeam", sprint_id[0][0], sprint_team,output=False)
             return redirect(url_for('sprints'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
 
     return render_template("create_sprint.html", data=data, len_team=len(data))
@@ -368,7 +374,7 @@ def createEmployee():
             database.sourceProc("createEmployee",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,output=False)
             return redirect(url_for('employees'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
 
     return render_template("create_employee.html", data=data, len_team=len(data))
@@ -389,11 +395,18 @@ def createManager():
         team_id = request.form['team_id']
         try:
             database.sourceProc("createManager", emp_id,team_id,output=False)
-
             return redirect(url_for('managers'))
         except Exception as err:
-            print(err)
-            flash(err, 'error')
+            error=str(err)
+            print(error)
+            if "manager.PRIMARY" in error:
+                flash("The manager that you have selected already manages a team, please select a different manager or edit the manager if you wish you change the team.", 'error')
+            elif "manager.team_id_UNIQUE" in error:
+                flash("Team that you provided already has a manager!",'error')
+            else:
+                flash(err, 'error')
+
+            
 
     return render_template("create_manager.html", data=data, len_team=len(data),employees=employees,len_employee=len(employees))
 
@@ -409,51 +422,45 @@ def editTeam(id):
             database.sourceProc("updateTeam", team_name, team_description, team_location,team_id,output=False)
             return redirect(url_for('allTeams'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     
     values=database.sourceProc("getTeam",id)
 
-    print(values)
     return render_template("edit_team.html",values=values,id=id)
 
 @app.route('/delete/Incidents/<id>',methods=['GET', 'POST'])
 def deleteTeam(id): 
     try:
-        print(id)
         database.sourceProc("deleteIncident",id,output=False)
     except Exception as err:
-        print(err)
+        
         flash(err, 'error')
     return redirect(url_for('incidents'))
 
 @app.route('/delete/Requests/<id>',methods=['GET', 'POST'])
 def deleteRequest(id): 
     try:
-        print(id)
         database.sourceProc("deleteRequest",id,output=False)
     except Exception as err:
-        print(err)
+        
         flash(err, 'error')
     return redirect(url_for('requests'))
 
 @app.route('/delete/Changes/<id>',methods=['GET', 'POST'])
 def deleteChange(id): 
     try:
-        print(id)
         database.sourceProc("deleteChange",id,output=False)
     except Exception as err:
-        print(err)
+        
         flash(err, 'error')
     return redirect(url_for('changes'))
 
 @app.route('/delete/Managers/<id>',methods=['GET', 'POST'])
 def deleteManager(id): 
     try:
-        print(id)
         database.sourceProc("deleteManager",id,output=False)
     except Exception as err:
-        print(err)
         flash(err, 'error')
     return redirect(url_for('managers'))
     
@@ -484,11 +491,10 @@ def editEmployee(id):
             database.sourceProc("updateEmployee",team_id,emp_name,date_of_birth,sex,address_street_name,address_street_number,address_zipcode,address_city,address_state,phone_number,joining_date,emp_id,output=False)
             return redirect(url_for('employees'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     
     values=database.sourceProc("getEmployee",id)
-    print(values)
     return render_template("edit_employee.html",values=values,id=id, data=data,len_team=len(data))
 
 @app.route('/edit/Sprints/<id>',methods=['GET', 'POST'])
@@ -512,10 +518,10 @@ def editSprint(id):
             database.sourceProc("updateSprintTeam",  sprint_team,sprint_id,output=False)
             return redirect(url_for('sprints'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     values=database.sourceProc("getSprint",id)
-    print(values)
+
 
     return render_template("edit_sprint.html", values=values,data=data, len_team=len(data),id=id)
 
@@ -529,19 +535,22 @@ def editManager(id):
             val[1]
         ]
         data.append(row)
-    print(data)
     employees = getEmployeeIdAndName()
     if request.method == 'POST':
         team_id = request.form['team_id']
         try:
             database.sourceProc("updateManager",team_id,id,output=False)
-
             return redirect(url_for('managers'))
         except Exception as err:
-            print(err)
-            flash(err, 'error')
+            error=str(err)
+            print(error)
+            if "manager.team_id_UNIQUE" in error:
+                flash("The team that you provided already has a manager",'error')
+            else:
+                print(error)
+                flash(err, 'error')
     values=database.sourceProc("getManager",id)
-    print(values)
+
 
     return render_template("edit_manager.html", data=data, values=values,id=id,len_team=len(data))
 
@@ -569,10 +578,10 @@ def editIncident(id):
             database.sourceProc("updateIncident", inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,id,output=False)
             return redirect(url_for('incidents'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     values=database.sourceProc("getIncident",id)
-    print(values)
+  
 
     return render_template("edit_incident.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
@@ -598,10 +607,9 @@ def editRequest(id):
             database.sourceProc("updateRequest", req_description, req_start, req_status,req_priority,req_sprint,req_created,id,output=False)
             return redirect(url_for('requests'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     values=database.sourceProc("getRequest",id)
-    print(values)
 
     return render_template("edit_request.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
@@ -630,10 +638,10 @@ def editChange(id):
             database.sourceProc("updateChange",chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,id,output=False)
             return redirect(url_for('changes'))
         except Exception as err:
-            print(err)
+            
             flash(err, 'error')
     values=database.sourceProc("getChange",id)
-    print(values)
+
 
     return render_template("edit_change.html",id=id, values=values,data=data, len_sprint=len(data),employees=employees,len_employee=len(employees))
 
@@ -643,7 +651,6 @@ def renderChart():
     if request.method == 'POST':
         start_date = request.form['start_date']
         end_date = request.form['end_date']
-        print(start_date,end_date)
         tickets = database.sourceProc("getTicketsBetweenDates",start_date,end_date)
         for val in tickets:
             row = [
@@ -651,7 +658,6 @@ def renderChart():
                 val[1],
             ]
             data.append(row)
-        print(data)
     return render_template('render_chart.html',data=data)
 
 @app.route('/getDataInsights',methods=['GET', 'POST'])
@@ -668,24 +674,24 @@ def renderChartInsights():
                 val[1],
             ]
         inc_data.append(row)
-    print(inc_data)
+
     for val in request_tickets:
         row = [
                 str(val[0]),
                 val[1],
             ]
         req_data.append(row)
-    print(req_data)
+
     for val in change_tickets:
         row = [
                 str(val[0]),
                 val[1],
             ]
         chg_data.append(row)
-    print(chg_data)
+
     number_of_tickets_per_team=database.sourceProc('getNumberOfTickersPerTeam')
     number_of_tickets_per_priority=database.sourceProc("getTicketsByPriority")
-    print(number_of_tickets_per_team)
+ 
 
     return render_template('charts.html',inc_data=inc_data,req_data=req_data,chg_data=chg_data,number_of_tickets_per_team=number_of_tickets_per_team,number_of_tickets_per_priority=number_of_tickets_per_priority)
 
