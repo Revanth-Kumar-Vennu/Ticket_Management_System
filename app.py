@@ -1,21 +1,12 @@
 # Main server app
 
-from flask import Flask, render_template, request, redirect, url_for, make_response
-from werkzeug.utils import secure_filename
+from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector as mysql
 import os
 from os.path import join, dirname, realpath, basename
 import database
-import json
-from datetime import datetime
 
-from flask import Flask, render_template, request, session, redirect, url_for, flash
-# from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
-
-from werkzeug.security import generate_password_hash,check_password_hash
-from flask_login import login_user,logout_user,login_manager,LoginManager
-from flask_login import login_required,current_user
+from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_toastr import Toastr
 
 
