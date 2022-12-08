@@ -1,5 +1,6 @@
 # Main server app
 
+import time
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector as mysql
 import os
@@ -421,11 +422,10 @@ def editTeam(id):
     return render_template("edit_team.html",values=values,id=id)
 
 @app.route('/delete/Incidents/<id>',methods=['GET', 'POST'])
-def deleteTeam(id): 
+def deleteIncident(id): 
     try:
         database.sourceProc("deleteIncident",id,output=False)
     except Exception as err:
-        
         flash(err, 'error')
     return redirect(url_for('incidents'))
 

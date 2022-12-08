@@ -1,7 +1,7 @@
 import mysql.connector as mysql
 
 from config import *
-import csv
+
 
 # Function to connect to MySQL server and optionally, database
 def connection(database=None):
@@ -76,72 +76,6 @@ def sourceProc(procedure, *args, output=True, lastRowId=False):
         return result
 
 
-def import_from_csv(name, filename):
-    with open(filename, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        if name == 'cust':
-            for row in reader:
-                row[4] = int(row[4])
-                source("new_customer.sql", *row, output=False)
-        elif name == 'res':
-            for row in reader:
-                row[0], row[1], row[5] = map(int, (row[0], row[1], row[5]))
-                source("new_reservation.sql", *row, output=False)
-        elif name == 'room':
-            for row in reader:
-                row[0], row[3], row[4] = map(int, (row[0], row[3], row[4]))
-                source("new_room.sql", *row, output=False)
-        elif name == 'room_type':
-            for row in reader:
-                row[2] = int(row[2])
-                source("new_room_type.sql", *row, output=False)
-        elif name == 'tnx':
-            for row in reader:
-                row[4], row[6], row[7] = map(int, (row[4], row[6], row[7]))
-                for i in (1,2):
-                    if row[i] == 'NULL':
-                        row[i] = None
-                    else:
-                        row[i] = int(row[i])
-                source("new_transaction.sql", *row, output=False)
-        elif name == 'emp':
-            for row in reader:
-                row[0], row[4] = int(row[0]), int(row[4])
-                source("new_employee.sql", *row, output=False)
-        elif name == 'job':
-            for row in reader:
-                row[1] = int(row[1])
-                source("new_job.sql", *row, output=False)
-
-
-def export_to_csv(name, filename):
-    if name == 'Customer':
-        fields = ['cust_id', 'cust_fname', 'cust_lname', 'cust_address', 'cust_ph_no', 'status']
-        rows = source("all_customers.sql")
-    elif name == 'Employee':
-        fields = ['emp_id', 'job_id', 'emp_fname', 'emp_lname', 'emp_address', 'emp_ph_no']
-        rows = source("all_employees.sql")
-    elif name == 'Job':
-        fields = ['job_id', 'job_title', 'salary']
-        rows = source("all_employees.sql")
-    elif name == 'Reservation':
-        fields = ['res_id', 'cust_id', 'room_id', 'transaction_id', 'in_date', 'out_date', 'days']
-        rows = source("all_reservations.sql")
-    elif name == 'Room_Type':
-        fields = ['type_id', 'name', 'capacity']
-        rows = source("all_room_types.sql")
-    elif name == 'Room':
-        fields = ['room_id', 'type_id', 'description', 'price', 'occupancy_status']
-        rows = source("all_rooms.sql")
-    elif name == 'Transaction':
-        fields = ['transaction_id', 'emp_id', 'res_id', 'dated', 'amount', 'payment_mode', 'type', 'status']
-        rows = source("all_transactions.sql")
-    with open(filename, 'w') as csvfile:
-        csvwriter = csv.writer(csvfile)
-        csvwriter.writerow(fields)
-        csvwriter.writerows(rows)
-
 
 def clear():
     global conn
@@ -172,7 +106,7 @@ conn.close()
 conn = connection(DATABASE)
 if newDB:
     print("Creating required tables in the database...")
-    source('tables_schema.sql', output=False)
+    source('databaseDump.sql', output=False)
 
 
 # Running this script explicitly to delete the database
