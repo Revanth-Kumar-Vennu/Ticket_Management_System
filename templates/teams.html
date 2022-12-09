@@ -12,6 +12,9 @@
 
     {% block style %}
     {% endblock style %}
+    {{ toastr.include_jquery() }}
+    {{ toastr.include_toastr_css() }}
+    {{ toastr.message() }}
     <link
         href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,700,700i|Raleway:300,400,500,700,800"
         rel="stylesheet">
@@ -41,6 +44,7 @@
 
 <body>
     {% include 'header.html' %}
+    {{ toastr.include_toastr_js() }}
 
     <!-- ======= Header ======= -->
     <!-- <div class="container">

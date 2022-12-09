@@ -1,5 +1,6 @@
 # Main server app
 
+from asyncio import timeout
 import time
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector as mysql
@@ -129,6 +130,8 @@ def managers():
 
 @app.route('/allIncidents')
 def incidents():
+    from flask import get_flashed_messages
+    get_flashed_messages(True)
     team = database.sourceProc("getAllIncidents")
     data = []
     for val in team:
@@ -218,7 +221,9 @@ def createTeam():
 
 @app.route('/createIncident',methods=['GET', 'POST'])
 def createIncident(): 
+    
     sprints = database.sourceProc("getAllSprints")
+    print(sprints)
     data = []
     for val in sprints:
         row = [
@@ -237,6 +242,7 @@ def createIncident():
         inc_created = request.form['inc_created']
         try:
             database.sourceProc("createIncident", inc_id, inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,output=False)
+            flash("Incident created with id "+inc_id,category='success')
             return redirect(url_for('incidents'))
         except Exception as err:
             error=str(err)
@@ -268,6 +274,7 @@ def createRequest():
         req_created = request.form['req_created']
         try:
             database.sourceProc("createRequest", req_id, req_description, req_start, req_status,req_priority,req_sprint,req_created,output=False)
+            flash("Request created with id "+req_id,category='success')
             return redirect(url_for('requests'))
         except Exception as err:
             error=str(err)
@@ -302,6 +309,7 @@ def createChange():
         chg_implementor = request.form['chg_implementor']
         try:
             database.sourceProc("createChange", chg_id, chg_description, chg_start, chg_status,chg_priority,chg_sprint,chg_created,chg_acceptor,chg_implementor,output=False)
+            flash("Change created with id "+chg_id,category='success')
             return redirect(url_for('changes'))
         except Exception as err:
             error=str(err)
