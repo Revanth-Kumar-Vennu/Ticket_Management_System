@@ -1,6 +1,6 @@
 # Main server app
 
-from asyncio import timeout
+
 import time
 from flask import Flask, render_template, request, redirect, url_for
 import mysql.connector as mysql
@@ -84,9 +84,10 @@ def employees():
     for val in team:
         row = [
             val[0],
-            val[12],
+            val[13],
             val[2],
             val[3].strftime("%b %d, %Y"),
+            val[12],
             val[4],
             val[6] +" "+ 
             val[5] +", "+ 
@@ -98,7 +99,7 @@ def employees():
         ]
         data.append(row)
 
-    headings = ["ID", "Team Name", "Name", "Date Of Birth","Sex","Address","Phone Number","Joining Date"]
+    headings = ["ID", "Team Name", "Name", "Date Of Birth","Age","Sex","Address","Phone Number","Joining Date"]
 
     return render_template('teams.html', data=data, type="Employees",name="Employee", headings=headings)
 
@@ -575,6 +576,7 @@ def editIncident(id):
         inc_created = request.form['inc_created']
         try:
             database.sourceProc("updateIncident", inc_description, inc_start, inc_status,inc_priority,inc_sprint,inc_created,id,output=False)
+            flash("Incident updated successfully", 'success')
             return redirect(url_for('incidents'))
         except Exception as err:
             
