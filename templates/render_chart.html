@@ -92,8 +92,11 @@
                 x: item[0],
                 y: item[1]
             }
-            dates.push(item[0])
-            all_data.push(new_json)
+            if (item[1] != 0) {
+                dates.push(item[0])
+                all_data.push(new_json)
+            }
+
         }
         console.log(all_data)
 
@@ -106,34 +109,6 @@
                     label: "All Tickets",
                     borderColor: "#3e95cd",
                     fill: false
-                    // }, {
-                    //     data: [{
-                    //         x: '2021-11-06 23:39:30',
-                    //         y: 150
-                    //     }, {
-                    //         x: '2021-11-07 01:00:28',
-                    //         y: 160
-                    //     }, {
-                    //         x: '2021-11-07 09:00:28',
-                    //         y: 120
-                    //     }],
-                    //     label: "Asia",
-                    //     borderColor: "#8e5ea2",
-                    //     fill: false
-                    // }, {
-                    //     data: [{
-                    //         x: '2021-11-06 23:39:30',
-                    //         y: 250
-                    //     }, {
-                    //         x: '2021-11-07 01:00:28',
-                    //         y: 260
-                    //     }, {
-                    //         x: '2021-11-07 09:00:28',
-                    //         y: 220
-                    //     }],
-                    //     label: "Europe",
-                    //     borderColor: "#3cba9f",
-                    //     fill: false
                 }
                 ]
             },
@@ -142,6 +117,15 @@
                     display: true,
                     text: 'All tickets over a period of time.'
                 },
+                // scales: {
+                //     yAxes: [{
+                //         display: true,
+                //         stacked: true,
+                //         ticks: {
+                //             min: 0, // minimum value
+                //         }
+                //     }]
+                // }
             }
         });
 
