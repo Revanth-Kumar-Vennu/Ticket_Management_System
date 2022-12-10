@@ -35,28 +35,7 @@ def createDB():
     cursor.execute(f"CREATE DATABASE {DATABASE}")
     cursor.close()
 
-# Function to run a sql script
-def source(filename, *args, output=True, lastRowId=False):
-    cursor = conn.cursor(buffered=output)
-    with open('sql/' + filename) as f:
-        statements = f.read()
-        statements = statements.replace('\n', ' ')
-        statements = statements.replace(';', '\n')
-        for statement in statements.strip().splitlines():
-            if args:
-                cursor.execute(statement, args) if statement else None
-                break
-            cursor.execute(statement) if statement else None
 
-    if output:
-        result = cursor.fetchall()
-        
-    if lastRowId:
-        result = cursor.lastrowid
-    conn.commit()
-    cursor.close()
-    if output or lastRowId:
-        return result
 
 def sourceProc(procedure, *args, output=True, lastRowId=False):
     cursor = conn.cursor(buffered=output)
@@ -77,14 +56,7 @@ def sourceProc(procedure, *args, output=True, lastRowId=False):
 
 
 
-def clear():
-    global conn
-    cur = conn.cursor()
-    cur.execute(f"DROP DATABASE IF EXISTS {DATABASE}")
-    cur.close()
-    createDB()
-    conn = connection(DATABASE)
-    source('tables_schema.sql', output=False)
+
 
 
 # This section will run as soon as this script is imported
@@ -104,23 +76,8 @@ if (DATABASE,) not in cur.fetchall():
 cur.close()
 conn.close()
 conn = connection(DATABASE)
-if newDB:
-    print("Creating required tables in the database...")
-    source('databaseDump.sql', output=False)
+
+   
 
 
-# Running this script explicitly to delete the database
-# Implemented for developement purposes only
-# No need to run this script explicitly in production
-if __name__ == '__main__':
-    # Getting confirmation from the user
-    print("Running this script explicitly will delete the database with name as in config.ini")
-    x = input("Do you want to delete the database? [Y/n] ").upper()
-    if x == 'Y' or x == 'YES':
-        # Deleting the database with name as in config file
-        cur = conn.cursor()
-        cur.execute(f"DROP DATABASE IF EXISTS {DATABASE}")
-        cur.close()
-        print("database deleted")
-    print(conn)
-    conn.close()
+
