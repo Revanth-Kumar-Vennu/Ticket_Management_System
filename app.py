@@ -18,23 +18,11 @@ app = Flask(__name__)
 UPLOAD_FOLDER = join(dirname(realpath(__file__)), 'static/uploads/')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# MY db connection
 local_server = True
-# app = Flask(__name__)
 app.secret_key = 'kusumachandashwini'
 
 
 toastr = Toastr(app)
-
-
-# this is for getting unique user access
-# login_manager = LoginManager(app)
-# login_manager.login_view = 'login'
-
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return User.query.get(int(user_id))
 
 
 @app.route('/')
@@ -206,12 +194,10 @@ def changes():
 @app.route('/createTeam',methods=['GET', 'POST'])
 def createTeam(): 
     if request.method == 'POST':
-        # team_id = request.form['team_id']
         team_name = request.form['team_name']
         team_description = request.form['team_description']
         team_location = request.form['team_location']
         try:
-            # database.source("create_team.sql", team_name, team_description, team_location,output=False)
             database.sourceProc("createTeam", team_name, team_description, team_location,output=False)
             return redirect(url_for('allTeams'))
             
@@ -332,7 +318,6 @@ def createSprint():
         ]
         data.append(row)
     if request.method == 'POST':
-        # sprint_id = request.form['sprint_id']
         sprint_name = request.form['sprint_name']
         sprint_start = request.form['sprint_start']
         sprint_end = request.form['sprint_end']
@@ -359,7 +344,6 @@ def createEmployee():
         ]
         data.append(row)
     if request.method == 'POST':
-        # emp_id = request.form['emp_id']
         team_id = request.form['team_id']
         emp_name = request.form['emp_name']
         date_of_birth = request.form['date_of_birth']

@@ -45,29 +45,6 @@
 <body>
     {% include 'header.html' %}
     {{ toastr.include_toastr_js() }}
-
-    <!-- ======= Header ======= -->
-    <!-- <div class="container">
-        <div class="row">
-            <label>Buscar:</label><input type="text" onkeyup="filter(event)">
-            <table id="easy-table" class="table table is-striped is-bordered ">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>Last name</th>
-                        <th>Email</th>
-                        <th>Gere</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-            <div id="paginator"></div>
-        </div>
-
-    </div> -->
     <div class="container table-top">
         <div class="card shadow my-5">
             <h4 class="card-header">{{type}}</h4>
@@ -91,14 +68,6 @@
                 <table id="easy-table"
                     class="table table-searchable table-striped table-bordered table-hover table-responsive">
                     <thead>
-                        <!-- <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Last name</th>
-                            <th>Email</th>
-                            <th>Gere</th>
-                            <th>Actions</th>
-                        </tr> -->
                     </thead>
                     <tbody>
                     </tbody>
@@ -138,7 +107,6 @@
         var data = '{{data|tojson|safe}}'
         var headings = '{{headings|tojson|safe}}'
         headings = JSON.parse(headings)
-        // data = JSON.stringify(data)
         var data = JSON.parse(data)
         var type = '{{type|safe}}'
         var data1 = [];
